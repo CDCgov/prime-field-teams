@@ -1,0 +1,91 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Build output
+**/target/**
+**/log/**
+**/dependency-reduced-pom.xml
+
+# Frontend build output
+**/node_modules/**
+**/_site/**
+
+# IDEA files
+**/.idea/**
+**/*.iml
+**/.run/**
+
+# Play files
+**/result_files/*.csv
+**/routed_files/*.csv
+Test*.csv
+Test*.json
+**/Xperiment.kt
+**/junk
+
+# Mac files
+**/.DS_Store
+.DS_Store
+
+# Emacs files
+*~
+
+prime-router/fake-pdi-covid-19.csv
+*.hl7
+prime-router/id_file
+prime-router/.classpath
+prime-router/.project
+prime-router/local.settings.json
+
+# VS Code
+**/.vscode/**
+
+# Eclipse
+**/.settings/**
+
+# Azurite (Win)
+prime-router/__azurite_db_blob__.json
+prime-router/__azurite_db_blob_extent__.json
+prime-router/__azurite_db_queue__.json
+prime-router/__azurite_db_queue_extent__.json
+prime-router/__blobstorage__/*
+prime-router/__queuestorage__/*
+prime-router/.factorypath
+__blobstorage__/*
+prime-router/metadata/organizations-mry.yml
+prime-router/pdi-covid-19.csv
+__queuestorage__/*
+__azurite_db_queue_extent__.json
+__azurite_db_queue__.json
+__azurite_db_blob_extent__.json
+__azurite_db_blob__.json
+prime-router/source.mry
+
+# PRIME test files
+prime-router/result_files/*
+prime-router/routed_files/*
+
+# Hashicorp Vault Secrets
+prime-router/.vault/env/**
+
+# Environment settings
+backlog-kotlin/*.properties
+**/.env
+**/keys
