@@ -1,14 +1,11 @@
 <template>
 	<us-container fluid="lg">
-        <h1>Home</h1>
+        <h1>About</h1>
 	</us-container>
 </template>
 <script>
 export default {
-    name: "Home",
-    props: {
-        msg: String,
-    },
+    name: "About"
 };
 </script>
 <style lang="scss">
