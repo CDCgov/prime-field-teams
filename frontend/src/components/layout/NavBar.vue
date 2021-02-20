@@ -9,6 +9,7 @@
             <us-header-nav>
                 <us-nav-item :to="{name:'home'}">Home</us-nav-item>
                 <us-nav-item :to="{name:'about'}">About</us-nav-item>
+                <us-nav-item :to="{name:'manage-schemas'}">Schema</us-nav-item>
                 <us-nav-item @click="login()">Login</us-nav-item>
             </us-header-nav>
         </us-header>
