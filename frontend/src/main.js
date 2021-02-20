@@ -5,7 +5,9 @@ import router from './router'
 //window.uswds = uswds;
 //import { UswdsVue } from 'uswds-vue';
 import { UswdsVue } from '../../../../uswds-vue/src/main.js';
+import Logger from './utils/Logger';
 
+Vue.use(Logger);
 Vue.use(UswdsVue);
 Vue.config.productionTip = false
 

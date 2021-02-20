@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@okta/okta-auth-js": "^4.7.1",
     "core-js": "^3.6.5",
     "svg4everybody": "^2.1.9",
     "uswds": "^2.10.0",
