@@ -89,8 +89,6 @@ export default {
                 //pkce: false                           
             };
 
-            // parseFromUrl
-
             const authClient = new OktaAuth(config);
             authClient.signInWithRedirect({state: `okta-${generateId(36)}`});
 
@@ -102,7 +100,6 @@ export default {
                 }
             });
 
-            // authState.isAuthenticated
 
         },
 
