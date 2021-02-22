@@ -3,8 +3,7 @@
 const express = require('express');
 const Logger = require('./lib/utils/Logger');
 const app = express();
-const userApi = require('./lib/routes/user-api');
-const authApi = require('./lib/routes/auth-api');
+const schemaApi = require('./lib/routes/schema-api');
 const middleware = require('./lib/routes/middleware');
 require('express-async-errors');
 const PORT = process.env.PORT ? process.env.PORT : 7564;
@@ -12,12 +11,13 @@ const PORT = process.env.PORT ? process.env.PORT : 7564;
 // Add in the middleware
 middleware.set(app);
 
-app.get('/user', authApi.isUser, userApi.get);
-app.post('/user/auth', userApi.register);
-app.put('/user', authApi.isUser, userApi.update);
+app.get('/schemas', authApi.isUser, schemaApi.getAll);
 
-// Check a session token is valid
-app.get('/user/sesh', authApi.get);
+app.delete('/schema', authApi.isUser, schemaApi.delete);
+app.get('/schema', authApi.isUser, schemaApi.get);
+app.post('/schema', authApi.isUser, schemaApi.create);
+app.put('/schema', authApi.isUser, schemaApi.update);
+
 
 // Serve up examples
 app.use(express.static('public'))

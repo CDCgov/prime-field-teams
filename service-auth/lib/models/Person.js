@@ -14,12 +14,9 @@ module.exports = function(sequelize) {
     var Model = sequelize.define('person', {
         
         uuid: { type: Sequelize.STRING, defaultValue: uuidv4}, 
-        uuidOkta: Sequelize.STRING,
-        uuidLoginGov: Sequelize.STRING,
 
         organizationId: Sequelize.BIGINT,
-        email_encrypted: Sequelize.STRING,
-        email: Cipher.registerField('email'),
+        email: Sequelize.STRING,
 
         suffix: Sequelize.STRING,
         firstName_encrypted: Sequelize.STRING,
@@ -52,16 +49,19 @@ module.exports = function(sequelize) {
         //residentCongregateSetting: {type: Sequelize.BOOLEAN, defaultValue: false},
         employedInHealthcare: {type: Sequelize.BOOLEAN, defaultValue: false},
 
-        ip: Sequelize.STRING,
+        lastIp: Sequelize.STRING,
+        lastLogin: Sequelize.DATE,
+
+        // Flexible field for user preferences
+        preferences: Sequelize.JSONB
 
     }, {
         createdAt: 'created', 
         updatedAt: 'modified',
         indexes: [
             {using: 'BTREE', fields: ['uuid'], unique: true},
+            {using: 'BTREE', fields: ['email']},
             {using: 'BTREE', fields: ['role']},
-            {using: 'BTREE', fields: ['uuidOkta']},
-            {using: 'BTREE', fields: ['uuidLoginGov']},
             {using: 'BTREE', fields: ['organizationId']},
 
         ]          

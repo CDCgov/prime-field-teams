@@ -1,13 +1,15 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import _ from 'lodash';
+import Vue from 'vue';
+import Vuex from 'vuex';
+import User from './models/User';
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
         user: null,
-        token: null,
-        authReady: false
+        apiToken: null,
+        authenticated: false,
+        authProvider: 'okta'
     },
     mutations: {    
         setUser(state, user) {
@@ -16,8 +18,11 @@ const store = new Vuex.Store({
         setToken(state, token) {
             state.token = token;
         },
-        setAuthReady(state, ready) {
-            state.authReady = ready;
+        setAuthProvider(state, provider) {
+            state.authProvider = provider;
+        },
+        setAuthenticated(state, isAuth) {
+            state.authenticated = isAuth;
         }        
     },
     getters: {
@@ -27,97 +32,21 @@ const store = new Vuex.Store({
         getToken(){
             return state.token; // eslint-disable-line
         },
-        getAuthReady() {
-            return state.authReady; // eslint-disable-line
+        getAuthProvider() {
+            return state.authProvider;  // eslint-disable-line
+        },        
+        getAuthenticated() {
+            return state.authenticated; // eslint-disable-line
         }
     },
     actions: {
-     
-
-        // ///////////////////////////////////////////////////////////////////////////////////////
-
-        async checkSession({ commit, dispatch }) {
-            
-            if (!firebase.auth().currentUser){
-                console.log('[store.checkSession] - no user -');
-                //commit('setToken', null);
-                //commit('setUser', null);
-                return null;
-            }
-                        
-            let token = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
-            let user = await firebase.auth().currentUser.toJSON();
-            //let user = data.user.toJSON();
-            
-            commit('setToken', token);
-            commit('setUser', user);
-
-            console.log('[store.checkSession] user = ', user);
-
-            return user;
-        },
-
-        // ///////////////////////////////////////////////////////////////////////////////////////
-
-        async login({ commit, dispatch }, info) {
-            
-            try {
-                // https://firebase.google.com/docs/auth/web/password-auth#sign_in_a_user_with_an_email_address_and_password
-                await firebase.auth().signInWithEmailAndPassword(info.email, info.password);
-                return await dispatch('checkSession');
-            }
-            catch(err){
-                commit('setToken', null);
-                commit('setUser', null);
-                throw err;
-            }
-        },
-
-        // ///////////////////////////////////////////////////////////////////////////////////////
-
-        async register({ commit, dispatch }, info) {
-
-            try {
-                // https://firebase.google.com/docs/auth/web/password-auth#create_a_password-based_account
-                const data = await firebase.auth().createUserWithEmailAndPassword(info.email, info.password);
-                
-                if (info.name){
-                    await data.user.updateProfile({
-                        displayName: info.name
-                    });    
-                }
-
-                await dispatch('checkSession');
-
-            }
-            catch(err){
-                commit('setToken', null);
-                commit('setUser', null);
-                throw err;
-            }
-        },
-
-        // ///////////////////////////////////////////////////////////////////////////////////////
-
-        async logout({ commit }) {
-            await firebase.auth().signOut();
-            commit('setToken', null);
-            commit('setUser', null);
-        },
-
-        // ///////////////////////////////////////////////////////////////////////////////////////
-
-        /**
-         * Send a reset password email link
-         * @see https://firebase.google.com/docs/auth/web/manage-users#send_a_password_reset_email
-         */        
-        async forgot({state}, email) {
-            return await firebase.auth().sendPasswordResetEmail(email);
-        }        
-
-        
+        onAuthenticated({commit}, info){
+            let user = new User();
+            user.register(info.provider, info.idToken);
+            commit('setAuthenticated', info.isAuthenticated);
+            commit('setUser', info.user);
+        }
     }
-
 });
 
 export default store;

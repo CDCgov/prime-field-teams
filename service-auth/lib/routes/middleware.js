@@ -1,12 +1,11 @@
 'use strict';
-const Settings = require('../../Settings');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const useragent = require('express-useragent');
-const Logger = require('../../utils/Logger');
+const Logger = require('../utils/Logger');
 const bearerToken = require('express-bearer-token');
-const AuthError = require('../../errors/AuthError');
+const AuthError = require('../errors/AuthError');
 const cache = require('memory-cache');
 const crypto = require('crypto');
 
@@ -41,7 +40,7 @@ exports.set = app => {
 var allowCrossDomain = function(req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-	res.header('Access-Control-Allow-Headers', 'Authorization, X-Forwarded-For, X-Forwarded-Proto, X-Forwarded-Port, X-Requested-With, Content-Type');
+	res.header('Access-Control-Allow-Headers', 'Authorization, X-Forwarded-For, X-Forwarded-Proto, X-Forwarded-Port, X-Requested-With, Content-Type, x-prime-auth-provider');
 	// intercept OPTIONS method and return 200
 	if ('OPTIONS' == req.method) {
 		res.sendStatus(200);

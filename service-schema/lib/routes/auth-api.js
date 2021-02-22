@@ -1,10 +1,10 @@
 'use strict';
 
-const Logger = require('../../utils/Logger');
-const {User, Account, Session} = require('../../models');
+const Logger = require('../utils/Logger');
+const {User, Account, Session} = require('../models');
 const _ = require('lodash');
 const requestIp = require('request-ip');
-const AuthError = require('../../errors/AuthError');
+const AuthError = require('../errors/AuthError');
 
 var Auth = {
  

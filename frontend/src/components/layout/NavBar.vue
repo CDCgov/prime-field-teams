@@ -7,6 +7,7 @@
                 PRIME Field Teams
             </us-header-brand>
             <us-header-nav>
+                <us-nav-item v-if="authenticated">{{authenticated}}</us-nav-item>
                 <us-nav-item :to="{name:'home'}">Home</us-nav-item>
                 <us-nav-item :to="{name:'about'}">About</us-nav-item>
                 <us-nav-item :to="{name:'manage-schemas'}">Schema</us-nav-item>
@@ -18,8 +19,13 @@
 <script>
 export default {
     name: "NavBar",
-    props: {
-        msg: String,
+    computed: {
+        user() {
+            return this.$store.state.user;
+        },
+        authenticated() {
+            return this.$store.state.authenticated;
+        },
     }
 };
 </script>

@@ -1,13 +1,11 @@
 "use strict";
-const Logger = require('../../utils/Logger');
+const Logger = require('../utils/Logger');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const needle = require('needle');
-const AuthError = require('../../errors/AuthError');
+const AuthError = require('../errors/AuthError');
 
-function randomString(length) {
-	return crypto.randomBytes(length).toString('hex');
-}
+
 
 var LoginGov = {
 
@@ -58,6 +56,10 @@ var LoginGov = {
 	 */
 	async getTokenFromCode(code) {
 
+		function randomString(length) {
+			return crypto.randomBytes(length).toString('hex');
+		}
+		
 		// A JWT signed with the client’s private key and containing the following claims:
 		// iss (string) — The issuer, which must be the client_id.
 		// sub (string) — The subject, which must also be the client_id.

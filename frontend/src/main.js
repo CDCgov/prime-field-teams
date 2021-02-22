@@ -6,13 +6,18 @@ import App from './App.vue'
 import { UswdsVue } from '../../../../uswds-vue/src/main.js';
 import Logger from './utils/Logger';
 import router from './router.js';
+import store from './store.js';
+import AuthService from './services/AuthService.js';
 
-Vue.use(Logger);
-Vue.use(UswdsVue);
 Vue.config.productionTip = false
 
+Vue.use(Logger);
+Vue.use(store);
+Vue.use(UswdsVue);
+Vue.use(AuthService, {providers: ['okta', 'login.gov'], store: store});
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

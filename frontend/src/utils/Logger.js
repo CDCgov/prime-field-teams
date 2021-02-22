@@ -1,6 +1,5 @@
-var Logger = {};
-
-Logger.install = function(Vue, options) {
+function install(Vue, options = {}) {
+	
 	var level = 'debug';
 	var logLevel = 0;
 
@@ -118,6 +117,16 @@ Logger.install = function(Vue, options) {
 		}
 		__updateNumericLogLevel();
 	}
+	
+	const Logger = {
+		debug: function() {__message(this, Array.from(arguments), 'debug')},
+		info: function() {__message(this, Array.from(arguments), 'info')},
+		warn: function() {__message(this, Array.from(arguments), 'warn')},
+		error: function() {__message(this, Array.from(arguments), 'error')}
+	}
+	
+	// Also export in the form this.$logger.debug()
+	Vue.logger = Vue.prototype.$logger = Logger;	
 
 	Vue.log = Vue.prototype.$log = function() {
 		__message(this, Array.from(arguments), 'debug');
@@ -138,6 +147,6 @@ Logger.install = function(Vue, options) {
 	Vue.logError = Vue.prototype.$logError = function() {
 		__message(this, Array.from(arguments), 'error');
 	};
-};
+}
 
-export default Logger;
+export default install;

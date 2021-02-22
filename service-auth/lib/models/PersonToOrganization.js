@@ -7,7 +7,7 @@ const Sequelize = require('sequelize');
 
 module.exports = function(sequelize) {
 
-    var Model = sequelize.define('person_to_organization', {        
+    var Model = sequelize.define('person-to-org', {        
         personId: { type: Sequelize.INTEGER },
         organizationId: { type: Sequelize.INTEGER },
         level: { type: Sequelize.STRING, defaultValue: 'user' },
