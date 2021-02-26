@@ -16,6 +16,7 @@
     "uswds-vue": "^0.1.31",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vue-toast-notification": "^0.6.1",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
@@ -44,7 +45,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "no-unused-vars": 0
+    }
   },
   "browserslist": [
     "> 1%",

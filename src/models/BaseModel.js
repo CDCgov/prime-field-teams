@@ -1,37 +1,49 @@
 import axios from 'axios';
-import store from '../store.js';
 
-class Base {
+class BaseModel {
 
-    constructor() {
+    constructor(service, data) {
+
         // Pull the instance member service value from the static member
-        this.service = this.constructor.service;
+        this.service = service;
+
+        // If we have data passed in, we can setup fields now
+        if (data){
+            for (let key in data){
+                this[key] = data[key];
+            }            
+        }
+
+        if (!process.env[`VUE_APP_${service.toUpperCase()}_SERVICE_URL`]){
+            throw new Error(`The base url for service ${service} has not been give, you need to set in your .env file as "VUE_APP_${service.toUpperCase()}_SERVICE_URL"`)
+        }        
+
+        this.baseUrl = process.env[`VUE_APP_${service.toUpperCase()}_SERVICE_URL`];
+
     }
 
     // ///////////////////////////////////////////////////////////////////////////////////////
 
     async _send(verb, cmd, data) {
 
-        //console.log(`SENDING = [${verb.toUpperCase()}] ${Base.rootUrl}/${cmd}`);
-
         try {
+
+            const fullUrl = `${this.baseUrl}/${this.service}/${cmd}`;
+
+            console.log(`SENDING = [${verb.toUpperCase()}] ${fullUrl}`, this);
 
             let opts = {
                 method: verb,
-                url: `${Base.rootUrl}/${this.service}/${cmd}`,
+                url: fullUrl,
                 timeout: 1000,
                 data: data
             }
         
-            if (store.state.token) {
-                console.log('Token = ', store.state.token);
+            if (BaseModel.sessionToken) {
                 opts.headers = {
-                    Authorization: `Bearer ${store.state.token}`,
-                    'x-prime-auth-provider': store.state.authProvider
+                    Authorization: `Bearer ${BaseModel.sessionToken}`
                 };
             }
-
-            //let info = await axios.post(`${Base.rootUrl}/graphql/query`, { query: payload }, opts);
 
             let info = await axios(opts);
             
@@ -53,7 +65,7 @@ class Base {
 
     _handleResponse(resp) {
 
-        console.log('RESPONE = ', resp);
+        console.log('BaseModel._handleResponse() RESPONSE = ', resp);
 
         if (resp && resp.data) {
             return resp.data;
@@ -141,6 +153,4 @@ class Base {
 
 }
 
-Base.rootUrl = process.env.VUE_APP_API_ROOT_URL ? process.env.VUE_APP_API_ROOT_URL : 'http://localhost:7001';
-
-export default Base;
+export default BaseModel;

@@ -7,10 +7,13 @@
                 PRIME Field Teams
             </us-header-brand>
             <us-header-nav>
+                <!--
                 <us-nav-item v-if="user && user.firstName">{{user.firstName}}</us-nav-item>
                 <us-nav-item v-if="user && user.name">{{user.name}}</us-nav-item>
+                -->
                 <us-nav-item v-if="authenticated" :to="{name:'home'}">Home</us-nav-item>
                 <us-nav-item v-if="authenticated" :to="{name:'about'}">About</us-nav-item>
+                <us-nav-item v-if="authenticated" :to="{name:'organization'}">Organization</us-nav-item>
                 <us-nav-item v-if="authenticated" :to="{name:'manage-schemas'}">Schema</us-nav-item>
                 <us-nav-item v-if="!authenticated" :to="{name:'login'}">Login</us-nav-item>
                 <us-nav-item v-if="authenticated" @click="onLogout()">Logout</us-nav-item>

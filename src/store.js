@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Auth from './models/Auth';
+import BaseModel from './models/BaseModel';
+import User from './models/User';
 
 Vue.use(Vuex)
 
@@ -48,19 +49,21 @@ const store = new Vuex.Store({
 
         async onAuthenticated({commit, dispatch}, info){
 
-            console.log('Entering store.onAuthenticated()', info);
+           console.log('Entering store.onAuthenticated()', info);
 
             if (!info){
                 return
             }
 
             try {
-                let auth = new Auth();
-                let res = await auth.register(info.provider, info.idToken, info.state);
+
+                let user = new User();
+                let res = await user.register(info.provider, info.idToken, info.state);
 
                 console.log('RES = ', res);
                 
-                if (res && res.token){                   
+                if (res && res.access_token){                   
+                    BaseModel.sessionToken = res.access_token;
                     commit('setUser', res.user);
                     commit('setAuthenticated', true);
                 }
@@ -69,6 +72,7 @@ const store = new Vuex.Store({
                 dispatch('onLogout');
                 throw new Error(err.toString());
             }
+            
         }
     }
 });

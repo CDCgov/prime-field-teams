@@ -1,15 +1,11 @@
 <template>
 	<us-container fluid="lg">
-        <h1>Home</h1>
+        <h1>Organization Keys</h1>
 	</us-container>
 </template>
 <script>
-
 export default {
-    name: "home",
-    props: {
-        msg: String,
-    },
+    name: "organization-keys"
 };
 </script>
 <style lang="scss">
