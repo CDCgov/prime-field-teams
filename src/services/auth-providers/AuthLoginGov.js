@@ -1,20 +1,42 @@
 import Utils from "../../utils/Utils";
 
-const AuthLoginGov = {
+class AuthLoginGov {
 
-    clientId: process.env.VUE_APP_LOGIN_GOV_CLIENT_ID,
-    redirectUri: process.env.VUE_APP_REDIRECT_URI,
+    constructor(){
 
-    // ///////////////////////////////////////////////////////////////////////////////////////
-
-    setup(){
-
-    },
+    }
 
     // ///////////////////////////////////////////////////////////////////////////////////////
 
-    destroy(){
-    },
+    async checkSession(){
+
+    }
+
+    // ///////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Handle the redirect, for login that means we hit the backend to convert code/state to a session token
+     */
+    async handleRedirect(queryParams){
+
+        console.log('>>>> AuthLoginGov.handleRedirect()', queryParams);
+
+        // Check for errors
+        if (queryParams.error_description){
+            throw new Error(queryParams.error_description);            
+        }
+        else if (queryParams.error){
+            throw new Error(queryParams.error);            
+        }
+                
+        // Fire the update auth state callback
+        return {
+            idToken: queryParams.code,
+            state: queryParams.state,
+            provider: 'login.gov',
+            user: {}
+        };
+    }
 
     // ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,7 +49,7 @@ const AuthLoginGov = {
 
         // A unique value at least 32 characters in length used for maintaining state between the request and the callback.
         // This value will be returned to the client on a successful authorization.
-        var state = `lg-${Utils.randomString(16)}`;
+        var state = `lg-${Utils.randomString(32)}`;
 
         // A unique value at least 32 characters in length used to verify the integrity of the id_token and mitigate
         // replay attacks. This value should include per-session state and be unguessable by attackers. This value
@@ -38,10 +60,10 @@ const AuthLoginGov = {
 
         let opts = {
             acr_values: 'http://idmanagement.gov/ns/assurance/loa/1',
-            client_id: this.clientId,
+            client_id: process.env.VUE_APP_LOGIN_GOV_CLIENT_ID,
             nonce: nonce,
             response_type: 'code',
-            redirect_uri: this.redirectUri,
+            redirect_uri: process.env.VUE_APP_REDIRECT_URI,
             scope: 'openid email profile:name',
             state: state
         };
@@ -51,7 +73,7 @@ const AuthLoginGov = {
         let url = `https://idp.int.identitysandbox.gov/openid_connect/authorize?${qs}`;
 
         window.location = url;
-    },  
+    } 
 
     // ///////////////////////////////////////////////////////////////////////////////////////
 

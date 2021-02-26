@@ -1,15 +1,15 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import User from './models/User';
+import Auth from './models/Auth';
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
         user: null,
-        apiToken: null,
+        sessionToken: null,
         authenticated: false,
-        authProvider: 'okta'
+        authProvider: null
     },
     mutations: {    
         setUser(state, user) {
@@ -40,11 +40,35 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        onAuthenticated({commit}, info){
-            let user = new User();
-            user.register(info.provider, info.idToken);
-            commit('setAuthenticated', info.isAuthenticated);
-            commit('setUser', info.user);
+                
+        onLogout({commit}){
+            commit('setAuthenticated', null);
+            commit('setUser', null);    
+        },
+
+        async onAuthenticated({commit, dispatch}, info){
+
+            console.log('Entering store.onAuthenticated()', info);
+
+            if (!info){
+                return
+            }
+
+            try {
+                let auth = new Auth();
+                let res = await auth.register(info.provider, info.idToken, info.state);
+
+                console.log('RES = ', res);
+                
+                if (res && res.token){                   
+                    commit('setUser', res.user);
+                    commit('setAuthenticated', true);
+                }
+            }
+            catch(err){
+                dispatch('onLogout');
+                throw new Error(err.toString());
+            }
         }
     }
 });

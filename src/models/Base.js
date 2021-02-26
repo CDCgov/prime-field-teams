@@ -31,8 +31,6 @@ class Base {
                 };
             }
 
-            console.log(opts);
-
             //let info = await axios.post(`${Base.rootUrl}/graphql/query`, { query: payload }, opts);
 
             let info = await axios(opts);
@@ -40,8 +38,14 @@ class Base {
             return this._handleResponse(info);
         } 
         catch (err) {
-            console.error(err);
-            throw new Error(err);
+            // If this is a controller error, we should have a message
+            if (err.request.response){
+                const errObj = JSON.parse(err.request.response);
+                throw new Error(errObj.message);
+            }
+            else {
+                throw new Error(err);
+            }
         }
     }
 
@@ -49,7 +53,7 @@ class Base {
 
     _handleResponse(resp) {
 
-        //console.log('RESPONE = ', resp);
+        console.log('RESPONE = ', resp);
 
         if (resp && resp.data) {
             return resp.data;
