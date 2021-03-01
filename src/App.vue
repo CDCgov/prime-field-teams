@@ -16,6 +16,10 @@ export default {
     async mounted(){
       
         try {
+
+            this.$store.dispatch('checkSession');
+
+            /*
            // Check to see if we have a session already
            let auth = await AuthFactory.create();
 
@@ -23,6 +27,7 @@ export default {
                 let info = await auth.checkSession(this.$route.query);
                 await this.$store.dispatch('onAuthenticated', info);
             }
+            */
         }
         catch(err){
             console.error('Error checking session', err);

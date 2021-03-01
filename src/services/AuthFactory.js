@@ -21,7 +21,6 @@ const AuthFactory = {
         else {
             Utils.setPreference('auth-provider', provider);
         }
-
         
         switch(provider){
             case 'okta': auth = new AuthOkta(); break;
@@ -63,6 +62,8 @@ const AuthFactory = {
         else {
             throw new Error('Did not recognize provider in value of query param state');
         }
+
+        Utils.setPreference('auth-provider', provider);
 
         let auth = await AuthFactory.create(provider);
 

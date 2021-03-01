@@ -9,7 +9,7 @@ class AuthLoginGov {
     // ///////////////////////////////////////////////////////////////////////////////////////
 
     async checkSession(){
-
+        
     }
 
     // ///////////////////////////////////////////////////////////////////////////////////////
@@ -29,6 +29,8 @@ class AuthLoginGov {
             throw new Error(queryParams.error);            
         }
                 
+        Utils.setPreference('auth-token', queryParams.code);
+
         // Fire the update auth state callback
         return {
             idToken: queryParams.code,
@@ -46,6 +48,11 @@ class AuthLoginGov {
      * @see https://developers.login.gov/oidc/
      */
     login() {
+
+        // Reset the provider, and we'll set it using the state when we redirect back in.
+        // that way, the checksession logic won't think we have a valid session
+        Utils.setPreference('auth-token', null);
+        Utils.setPreference('auth-provider', null);
 
         // A unique value at least 32 characters in length used for maintaining state between the request and the callback.
         // This value will be returned to the client on a successful authorization.
@@ -78,7 +85,8 @@ class AuthLoginGov {
     // ///////////////////////////////////////////////////////////////////////////////////////
 
     logout(){
-        
+        Utils.setPreference('auth-token', null);
+        Utils.setPreference('auth-provider', null);        
     }    
 }
 

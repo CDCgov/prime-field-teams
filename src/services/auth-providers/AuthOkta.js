@@ -162,7 +162,9 @@ class AuthOkta {
                         const user = await client.token.getUserInfo();
                         //const isExpired = await await client.token.isAccessTokenExpired();
                         //console.log(isExpired)
-                                            
+                                           
+                        Utils.setPreference('auth-token', authState.idToken.value);
+                        
                         resolve({
                             isAuthenticated: authState.isAuthenticated,
                             accessToken: authState.accessToken.value,
@@ -220,12 +222,18 @@ class AuthOkta {
      */
     login(){
         const client = this.__getClient();
+        // Reset the provider, and we'll set it using the state when we redirect back in.
+        // that way, the checksession logic won't think we have a valid session
+        Utils.setPreference('auth-token', null);
+        Utils.setPreference('auth-provider', null);
         client.signInWithRedirect({state: `ok-${Utils.randomString(18)}`});
     }
 
     // ///////////////////////////////////////////////////////////////////////////////////////
 
     logout(){
+        Utils.setPreference('auth-token', null);
+        Utils.setPreference('auth-provider', null);
         const client = this.__getClient();
         client.signOut();
     }

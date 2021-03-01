@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import BaseModel from './models/BaseModel';
 import User from './models/User';
+import Utils from './utils/Utils';
 
 Vue.use(Vuex)
 
@@ -47,9 +48,35 @@ const store = new Vuex.Store({
             commit('setUser', null);    
         },
 
+        async __processSession({commit}, seshResponse){
+            if (seshResponse && seshResponse.access_token){                   
+                BaseModel.sessionToken = seshResponse.access_token;
+                Utils.setPreference('session-token', seshResponse.access_token);
+                commit('setUser', seshResponse.user);
+                commit('setAuthenticated', true);
+            }   
+        },
+
+        async checkSession({dispatch}){
+
+            BaseModel.sessionToken = Utils.getPreference('session-token');
+
+            if (BaseModel.sessionToken){
+
+                let user = new User();
+                let res = await user.verifySession();
+    
+                console.log('CHECK SESION = ', res);
+
+                dispatch('__processSession', res);
+
+            }
+         
+        },
+
         async onAuthenticated({commit, dispatch}, info){
 
-           console.log('Entering store.onAuthenticated()', info);
+            //console.log('Entering store.onAuthenticated()', info);
 
             if (!info){
                 return
@@ -60,13 +87,10 @@ const store = new Vuex.Store({
                 let user = new User();
                 let res = await user.register(info.provider, info.idToken, info.state);
 
-                console.log('RES = ', res);
+                //console.log('RES = ', res);
                 
-                if (res && res.access_token){                   
-                    BaseModel.sessionToken = res.access_token;
-                    commit('setUser', res.user);
-                    commit('setAuthenticated', true);
-                }
+                dispatch('__processSession', res);
+
             }
             catch(err){
                 dispatch('onLogout');

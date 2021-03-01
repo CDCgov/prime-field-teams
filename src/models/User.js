@@ -37,6 +37,23 @@ class User extends BaseModel {
     }     
 
     // ///////////////////////////////////////////////////////////////////////////////////////
+
+    async verifySession(){
+
+        const data = await this._send('get', 'auth');
+
+        if (data && data.user){
+            // Assign user data to this 
+            for (let key in data.user){
+                this[key] = data.user[key];
+            }
+        }
+
+        return data;
+
+    }  
+
+    // ///////////////////////////////////////////////////////////////////////////////////////
     
     async logout(){
         return await this._send('delete', 'auth');
