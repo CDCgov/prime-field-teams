@@ -1,64 +1,40 @@
 <template>
 	<us-container>
 
-        <us-row class="mt-5">
+         <us-row class="mt-3">
+            <us-col md="3">
+                <us-form-group class="mb-4" v-if="orgs">
+                    <us-form-combobox name="Select Org" :options="orgs" v-model="selectedOrg" label-field="name"/>
+                </us-form-group>
+             </us-col>
+        </us-row>
+
+        <us-row class="mt-1">
 
             <us-col md="3">
-                <us-side-nav style="margin-top: 30px" class="pr-2">
+                
+                <us-side-nav class="pr-2">
                     <us-side-nav-item :class="{'active': link == 'info'}" @click="link = 'info'">Basic Info</us-side-nav-item>
-                    <us-side-nav-item :class="{'active': link == 'keys'}" @click="link = 'keys'">Keys</us-side-nav-item>
+                    <us-side-nav-item :class="{'active': link == 'keys'}" @click="link = 'keys'">API Keys</us-side-nav-item>
+                    <us-side-nav-item :class="{'active': link == 'users'}" @click="link = 'users'">Manage Users</us-side-nav-item>
                 </us-side-nav>       
+
+                <us-button variant="link" class="mt-3" @click="createOrg()">
+                    <i class="fas fa-plus-circle"></i> Create
+                </us-button>
+
+                <us-button variant="link" class="ml-2 mt-3" @click="getOrganizations()">
+                    <i class="fas fa-sync"></i> Refresh
+                </us-button>
+                
+
+
             </us-col>
 
             <us-col>
-
-                <div v-if="link == 'info'">
-                    <us-form v-if="org" @submit="onSubmit()" :validate="true">
-
-                        <us-row>
-                            <us-col>
-                                <us-form-group label="Name">
-                                    <us-form-input v-model="org.name" :required="true"/>
-                                </us-form-group>
-
-                                <us-form-group label="Description">
-                                    <us-form-input v-model="org.description" />
-                                </us-form-group>
-
-                                <us-form-group label="Website">
-                                    <us-form-input v-model="org.url" type='url'/>
-                                </us-form-group>
-                            </us-col>
-                            <us-col>
-                                <us-form-group label="Fax Number">
-                                    <us-form-input v-model="org.faxNumber" type='tel'/>
-                                </us-form-group>
-
-                                <us-form-group label="Phone Number">
-                                    <us-form-input v-model="org.phoneNumber" type='tel'/>
-                                </us-form-group>                        
-
-                                <us-form-group label="Icon URL">
-                                    <us-form-input v-model="org.icon" type='url'/>
-                                </us-form-group>                      
-                            </us-col>
-                        </us-row>       
-
-                        <div align="right">
-                            <us-button type="submit"><i class="far fa-save"></i> Save</us-button>
-                        </div>
-
-                    </us-form>
-                    <!-- 
-                    <pre>{{org}}</pre>
-                    -->
-                </div>
-
-
-                <div v-if="link == 'keys'">
-                    <keys></keys>
-                </div>
-
+                <org-info v-if="link == 'info'" :org="selectedOrg"></org-info>
+                <org-keys v-if="link == 'keys'" :org="selectedOrg"></org-keys>
+                <div v-if="link == 'users'">TBD</div>
             </us-col>
 
         </us-row>
@@ -68,15 +44,17 @@
 </template>
 <script>
 import Organization from '../../../models/Organization';
-import Keys from './Keys';
+import OrgKeys from './OrgKeys';
+import OrgInfo from './OrgInfo';
 
 export default {
     name: "organization",
-    components: {Keys},
+    components: {OrgKeys, OrgInfo},
     data(){
         return {
             link: 'info',
-            org: null
+            selectedOrg: null,
+            orgs: null
         }
     },
     computed: {
@@ -87,25 +65,46 @@ export default {
     watch: {
         user(newVal){
             if (newVal){
-                this.getOrganization();
+                this.getOrganizations();
             }
         }
     }, 
     mounted(){
-        this.getOrganization();
+        this.getOrganizations();
     },
     methods: {
-        async getOrganization(){
+
+        onSelectOrg(org){
+            this.selectedOrg = new Organization(org);
+        },
+
+        async createOrg(){
+             let org = new Organization();
+             org.name = "New org";
+             await org.save();
+             if (!this.orgs){
+                 this.orgs = [];
+             }
+             this.orgs.push(org);
+             this.selectOrg(org);
+        },
+
+        async getOrganizations(){
+
             if (!this.user){
                 return;
             }
-            if (!this.user.organizationId){        
-                this.$toast.error('You do not belong to any organizations!')      
-                return;
-            }
+
             let org = new Organization();
-            await org.load(this.user.organizationId);
-            this.org = org;
+            let res = await org.getOrganizations();
+            
+            this.orgs = res.results;
+            
+            if (this.orgs && this.orgs.length){
+                this.onSelectOrg(this.orgs[0]);
+            }
+
+            //await org.load(this.user.organizationId);
         }
     }
 };

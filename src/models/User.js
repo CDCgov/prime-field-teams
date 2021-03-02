@@ -8,6 +8,16 @@ class User extends BaseModel {
 
     // ///////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Generate public/private keys, to help users create their api keys. These are not stored anywhere
+     */
+    async generatePEM(){
+        const data = await this._send('get', 'auth/keys');
+        return data;
+    }
+
+    // ///////////////////////////////////////////////////////////////////////////////////////
+
     async getOrganizations(){
         const data = await this._send('get', 'org/search', {limit: 9999, skip:0});
         return data;

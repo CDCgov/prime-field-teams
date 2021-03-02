@@ -13,6 +13,13 @@ class Organization extends BaseModel {
         return data;
     }    
 
+    // ///////////////////////////////////////////////////////////////////////////////////////
+
+    async createKey(keyObj){
+        const data = await this._send('post', `${this.id}/key`, {key: keyObj});
+        return data;
+    }        
+
 }
 
 

@@ -14,11 +14,12 @@ class BaseModel {
             }            
         }
 
-        if (!process.env[`VUE_APP_${service.toUpperCase()}_SERVICE_URL`]){
-            throw new Error(`The base url for service ${service} has not been give, you need to set in your .env file as "VUE_APP_${service.toUpperCase()}_SERVICE_URL"`)
-        }        
+        //if (!process.env[`VUE_APP_${service.toUpperCase()}_SERVICE_URL`]){
+        //    throw new Error(`The base url for service ${service} has not been give, you need to set in your .env file as "VUE_APP_${service.toUpperCase()}_SERVICE_URL"`)
+        //}        
 
-        this.baseUrl = process.env[`VUE_APP_${service.toUpperCase()}_SERVICE_URL`];
+        //this.baseUrl = process.env[`VUE_APP_${service.toUpperCase()}_SERVICE_URL`];
+        this.baseUrl = process.env.VUE_APP_API_URL;
 
     }
 
@@ -28,7 +29,14 @@ class BaseModel {
 
         try {
 
-            const fullUrl = `${this.baseUrl}/${this.service}/${cmd}`;
+            let fullUrl = `${this.baseUrl}/${this.service}/${cmd}`;
+
+            console.log(`SENDING = [${verb.toUpperCase()}] ${fullUrl}`, this);
+            
+            // If there is a lead slash, remove it.
+            if (fullUrl.slice(-1) == '/'){
+                fullUrl = fullUrl.substring(0, fullUrl.length - 1);
+            }
 
             console.log(`SENDING = [${verb.toUpperCase()}] ${fullUrl}`, this);
 
@@ -104,13 +112,15 @@ class BaseModel {
 
     async save(){
         
+        let payload = {};
+        payload[this.service] = this;        
         let data = null;
 
         if (this.id){
-            data = await this._send('put', this.id, this);
+            data = await this._send('put', this.id, payload);
         }
         else {
-            data = await this._send('post', '', this);
+            data = await this._send('post', '', payload);
         }
 
         // Assign data to this 
