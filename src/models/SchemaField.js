@@ -2,12 +2,13 @@ import BaseModel from './BaseModel';
 
 class Schema extends BaseModel {    
 
-    constructor(orgId, data) {
+    constructor(orgId, schemaId, data) {
         super('org', data);
         // Schema lives in the org service, so has a sub-path to reference it
         this.organizationId = orgId;
-        this.setSubPath(`${orgId}/schema/`);
-        this.setSaveKey('schema');
+        this.schemaId = schemaId;
+        this.setSubPath(`${orgId}/schema/${schemaId}/field`);
+        this.setSaveKey('schemaField');
     }  
  
     // ///////////////////////////////////////////////////////////////////////////////////////

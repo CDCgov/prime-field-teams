@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from './components/pages/Home.vue'
 import About from './components/pages/About.vue'
-import Schemas from './components/pages/Schemas.vue'
+import Schemas from './components/pages/schemas/Schemas.vue'
 import Login from './components/pages/Login.vue'
 import Organization from './components/pages/org/Organization.vue';
 

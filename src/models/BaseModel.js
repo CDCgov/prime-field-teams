@@ -5,7 +5,11 @@ class BaseModel {
     constructor(service, data) {
 
         // Pull the instance member service value from the static member
-        this.service = service;
+        this._meta = {
+            service: service,
+            subPath: '',
+            saveKey: null
+        }
 
         // If we have data passed in, we can setup fields now
         if (data){
@@ -19,8 +23,18 @@ class BaseModel {
         //}        
 
         //this.baseUrl = process.env[`VUE_APP_${service.toUpperCase()}_SERVICE_URL`];
-        this.baseUrl = process.env.VUE_APP_API_URL;
+        this._meta.baseUrl = process.env.VUE_APP_API_URL;
 
+    }
+
+    // ///////////////////////////////////////////////////////////////////////////////////////
+
+    async setSubPath(path){
+        this._meta.subPath = path;
+    }
+
+    async setSaveKey(key){
+        this._meta.saveKey = key;
     }
 
     // ///////////////////////////////////////////////////////////////////////////////////////
@@ -29,7 +43,7 @@ class BaseModel {
 
         try {
 
-            let fullUrl = `${this.baseUrl}/${this.service}/${cmd}`;
+            let fullUrl = `${this._meta.baseUrl}/${this._meta.service}/${this._meta.subPath}${cmd}`;
 
             console.log(`SENDING = [${verb.toUpperCase()}] ${fullUrl}`, this);
             
@@ -113,7 +127,12 @@ class BaseModel {
     async save(){
         
         let payload = {};
-        payload[this.service] = this;        
+        if (this._meta.saveKey){
+            payload[this._meta.saveKey] = this;        
+        }
+        else {
+            payload[this._meta.service] = this;        
+        }
         let data = null;
 
         if (this.id){
@@ -141,14 +160,14 @@ class BaseModel {
 
     // ///////////////////////////////////////////////////////////////////////////////////////
 
-    static async getAll() {
-        
+    async getAll() {
+                
         let items = [];
         const data = await this._send('get', '');
 
         for (let i=0; i<data.length; i+=1){
             
-            let tmp = new this();
+            let tmp = new this.constructor();
         
             // Assign data to this 
             for (let key in data[i]){

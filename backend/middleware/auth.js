@@ -47,8 +47,6 @@ const AuthAPI = {
 			throw new AuthError('You are not logged in');
         }
 
-        Logger.debug(req.sesh);
-
         // Look up the user, and create if we need to (we have a valid session at this point)
         let personId = req.sesh.personId;
 

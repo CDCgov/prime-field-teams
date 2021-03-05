@@ -21,12 +21,28 @@ const OrgAPI = {
         if (!orgId){
             throw new ParamError(`You must pass a orgId`)
         }
+		
+		let includes = null;
+
+		// If not a super user, we also verify this user has access to this org
+		// Auth gates should really be doings this and also checking access level
+		// but done here as a precaution.
+		if (!req.sesh.user.level == 'super'){
+			includes = [
+				{
+					model: PersonToOrganization,
+					where: {personId: req.sesh.user.id}
+				}
+			];	
+		}
+
 
 		// Now pull the item info        
         req.org = await Organization.findOne({
 			where: {
 				id: orgId
-			}
+			},
+			includes: includes		
 		});
 
         if (!req.org){

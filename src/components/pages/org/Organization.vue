@@ -4,7 +4,7 @@
          <us-row class="mt-3">
             <us-col md="3">
                 <us-form-group class="mb-4" v-if="orgs">
-                    <us-form-combobox name="Select Org" :options="orgs" v-model="selectedOrg" label-field="name"/>
+                    <us-form-combobox name="Select Org" :options="orgs" v-model="org" key-field="id" label-field="name"/>
                 </us-form-group>
              </us-col>
         </us-row>
@@ -32,8 +32,8 @@
             </us-col>
 
             <us-col>
-                <org-info v-if="link == 'info'" :org="selectedOrg"></org-info>
-                <org-keys v-if="link == 'keys'" :org="selectedOrg"></org-keys>
+                <org-info v-if="link == 'info'" :org="org"></org-info>
+                <org-keys v-if="link == 'keys'" :org="org"></org-keys>
                 <div v-if="link == 'users'">TBD</div>
             </us-col>
 
@@ -52,22 +52,31 @@ export default {
     components: {OrgKeys, OrgInfo},
     data(){
         return {
-            link: 'info',
-            selectedOrg: null,
-            orgs: null
+            link: 'info'
         }
     },
     computed: {
         user() {
             return this.$store.state.user;
-        }
+        },
+        org(){
+            return this.$store.state.org;
+        },
+        orgs: {
+            get(){
+                return this.$store.state.orgs;
+            },
+            set(val){
+                this.$store.commit('setOrgs', val);
+            }
+        }           
     },   
     watch: {
         user(newVal){
             if (newVal){
                 this.getOrganizations();
             }
-        }
+        }             
     }, 
     mounted(){
         this.getOrganizations();
@@ -75,7 +84,7 @@ export default {
     methods: {
 
         onSelectOrg(org){
-            this.selectedOrg = new Organization(org);
+            this.org = new Organization(org);
         },
 
         async createOrg(){
@@ -85,8 +94,15 @@ export default {
              if (!this.orgs){
                  this.orgs = [];
              }
-             this.orgs.push(org);
-             this.selectOrg(org);
+             // Refresh
+             await this.getOrganizations();
+             // Select this org
+             for (let i=0; i<this.orgs.length; i+=1){
+                 if (this.orgs[i].id == this.org.id){
+                     this.$store.commit('setOrg', this.orgs[i]);
+                     return;
+                 }
+             }
         },
 
         async getOrganizations(){
@@ -97,11 +113,10 @@ export default {
 
             let org = new Organization();
             let res = await org.getOrganizations();
-            
-            this.orgs = res.results;
-            
+                        
+            this.$store.commit('setOrgs', res.results);
             if (this.orgs && this.orgs.length){
-                this.onSelectOrg(this.orgs[0]);
+                this.$store.commit('setOrg', this.orgs[0]);
             }
 
             //await org.load(this.user.organizationId);
