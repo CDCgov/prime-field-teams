@@ -1,5 +1,5 @@
 <template>
-	<us-container>
+	<us-container fluid="full">
 
         <us-tabs>
             <us-tab title="Definition" active>

@@ -1,8 +1,8 @@
 <template>
     <div id="nav">
-        <us-official-header variant="dark"/>
+        <us-official-header variant="dark" fluid="full"/>
 
-        <us-header variant="light">        
+        <us-header variant="light" fluid="full">        
             <us-header-brand image="/usds-logo-2.png">                
                 PRIME Field Teams
             </us-header-brand>

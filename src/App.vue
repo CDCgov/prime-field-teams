@@ -7,7 +7,7 @@
 <script>
 
 import NavBar from "./components/layout/NavBar";
-import AuthFactory from "./services/AuthFactory";
+//import AuthFactory from "./services/AuthFactory";
 
 
 export default {
