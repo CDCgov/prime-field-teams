@@ -23,7 +23,8 @@ router.post('', auth.isSuper, orgApi.create);
 //router.delete('/:orgId/person/:personId', auth.isOrgAdmin, person2OrgApi.removePerson);
 
 // Managing org public keys
-router.post('/:orgId', auth.isOrgAdmin, keyApi.create);
+router.get('/:orgId/key', auth.isOrgUser, orgApi.load, keyApi.getAll);
+router.post('/:orgId/key', auth.isOrgAdmin, orgApi.load, keyApi.create);
 router.delete('/:orgId/key/:keyId', auth.isOrgAdmin, keyApi.destroy);
 
 // Schema management

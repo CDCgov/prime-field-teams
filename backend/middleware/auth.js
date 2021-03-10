@@ -84,7 +84,7 @@ const AuthAPI = {
 
         if (!_.isEmpty(req.sesh.scopes)){
 
-            if (req.sesh.user.level = 'super') {
+            if (req.sesh.user.level == 'super') {
             //if (req.sesh.scopes.contains(AuthAPI.scopes.SUPER)){
                 // Super user, let through
                 return next();
@@ -134,7 +134,7 @@ const AuthAPI = {
         Logger.debug(req.sesh.user);
 
         // Check if this is a global super user
-        if (req.sesh.user.level = 'super') {
+        if (req.sesh.user.level == 'super') {
             return next();
         }
 

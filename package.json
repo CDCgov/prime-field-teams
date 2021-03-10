@@ -11,6 +11,7 @@
     "@okta/okta-auth-js": "^4.7.1",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "jsonwebtoken": "^8.5.1",
     "papaparse": "^5.3.0",
     "svg4everybody": "^2.1.9",
     "uswds": "^2.10.0",

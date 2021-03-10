@@ -2,6 +2,9 @@
 const Logger = require('../../utils/Logger');
 const { Person } = require('../../models');
 const Cipher = require('../../utils/Cipher');
+const _ = require('lodash');
+const AuthError = require('../../errors/AuthError');
+const ParamError = require('../../errors/AuthError');
 
 const UserAPI = {
 

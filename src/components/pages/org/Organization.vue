@@ -4,7 +4,7 @@
          <us-row class="mt-3">
             <us-col md="3">
                 <us-form-group class="mb-4" v-if="orgs">
-                    <us-form-combobox name="Select Org" :options="orgs" v-model="org" key-field="id" label-field="name"/>
+                    <us-form-combobox name="Select Org" :options="orgs" v-model="org" label-field="name"/>
                 </us-form-group>
              </us-col>
         </us-row>
@@ -15,8 +15,9 @@
                 
                 <us-side-nav class="pr-2">
                     <us-side-nav-item :class="{'active': link == 'info'}" @click="link = 'info'">Basic Info</us-side-nav-item>
-                    <us-side-nav-item :class="{'active': link == 'keys'}" @click="link = 'keys'">API Keys</us-side-nav-item>
                     <us-side-nav-item :class="{'active': link == 'users'}" @click="link = 'users'">Manage Users</us-side-nav-item>
+                    <us-side-nav-item :class="{'active': link == 'keys'}" @click="link = 'keys'">API Keys</us-side-nav-item>
+                    <us-side-nav-item :class="{'active': link == 'key-gen'}" @click="link = 'key-gen'">Key Tool</us-side-nav-item>
                 </us-side-nav>       
 
                 <us-button variant="link" class="mt-3" @click="createOrg()">
@@ -35,6 +36,7 @@
                 <org-info v-if="link == 'info'" :org="org"></org-info>
                 <org-keys v-if="link == 'keys'" :org="org"></org-keys>
                 <div v-if="link == 'users'">TBD</div>
+                <key-generator v-if="link == 'key-gen'"/>
             </us-col>
 
         </us-row>
@@ -46,10 +48,11 @@
 import Organization from '../../../models/Organization';
 import OrgKeys from './OrgKeys';
 import OrgInfo from './OrgInfo';
+import KeyGenerator from './KeyGenerator';
 
 export default {
     name: "organization",
-    components: {OrgKeys, OrgInfo},
+    components: {OrgKeys, OrgInfo, KeyGenerator},
     data(){
         return {
             link: 'info'
@@ -59,8 +62,13 @@ export default {
         user() {
             return this.$store.state.user;
         },
-        org(){
-            return this.$store.state.org;
+        org: {
+            get(){
+                return this.$store.state.org;
+            },
+            set(val){
+                this.$store.commit('setOrg', val);
+            }
         },
         orgs: {
             get(){

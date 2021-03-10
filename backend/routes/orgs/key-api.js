@@ -3,6 +3,10 @@ const Logger = require('../../utils/Logger');
 const { PublicKey } = require('../../models');
 const AuthError = require('../../errors/AuthError');
 const ParamError = require('../../errors/ParamError');
+const Chance = require('chance');
+const _ = require('lodash');
+const slugify = require('slugify');
+const adjective = require('../../mocks/adjectives');
 
 const KeyAPI = {
 
@@ -10,7 +14,7 @@ const KeyAPI = {
 		
 		let keys = await PublicKey.findAll({
 			where: {
-				organizationId: this.sesh.user.organizationId
+				organizationId: req.org.id
 			}
 		});
 
@@ -23,11 +27,29 @@ const KeyAPI = {
 		
 		let info = req.body.key;
 
+		Logger.debug('CREATING KEY', req.body.key)
+
         if (!info || _.isEmpty(info)){
-            throw new ParamError(`You must pass key info in the body`)
+            info = {};
         }
 
-		let key = await PublicKey.create(info);
+		let chance = new Chance();
+		let name = (info.name) ? info.name : _.sample(adjective) + ' ' + chance.animal();
+
+		if (_.isArray(info.scopes)){
+			info.scopes = info.scopes.join(', ');
+		}
+
+		let key = await PublicKey.create({
+			organizationId: req.org.id,
+			slug: slugify(`${req.org.name} ${name}`, {lower:true, strict:true}),
+			createdByPersonId: req.sesh.personId,
+			scopes: (info.scopes) ? info.scopes : 'prime.schema.read, prime.org.read, prime.users.read',
+			name: name,
+			url: (info.url) ? info.url : null,
+			contents: (info.contents) ? info.contents : null,
+		});
+		
 
 		res.json(key);
 	},

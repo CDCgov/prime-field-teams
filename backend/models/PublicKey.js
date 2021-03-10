@@ -9,6 +9,7 @@ module.exports = function(sequelize) {
 
     var Model = sequelize.define('public-key', {
         organizationId: { type: Sequelize.INTEGER },
+        slug: { type: Sequelize.STRING },
         createdByPersonId: { type: Sequelize.BIGINT },
         scopes: { type: Sequelize.STRING, defaultValue: 'prime.schema.read, prime.org.read, prime.users.read'},
         name: { type: Sequelize.STRING },

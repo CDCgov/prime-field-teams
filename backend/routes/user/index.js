@@ -10,7 +10,7 @@ require('express-async-errors');
 router.get('/auth', seshApi.load, seshApi.get); // Check a session access token is valid
 router.post('/auth', seshApi.register);  // Register and create session
 router.delete('/auth', seshApi.destroy);  // Logout, destroy session
-router.get('/auth/token', seshApi.login); 
+router.post('/auth/token', seshApi.login); 
 router.get('/auth/keys', seshApi.generateKeys); 
 
 // User CRUD methods
@@ -21,5 +21,7 @@ router.put('', seshApi.hasSession, userApi.loadSelf, userApi.update); // Update 
 router.get('/:personId', seshApi.isSuper, userApi.load, userApi.get); // Get another person
 router.put('/:personId', seshApi.isSuper, userApi.load, userApi.update); // Update another person
 router.delete('/:personId', seshApi.isSuper, userApi.load, userApi.destroy);
+
+
 
 module.exports = router;

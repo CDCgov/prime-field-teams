@@ -2,7 +2,7 @@
 const Logger = require('../../utils/Logger');
 const OktaService = require('../../services/OktaService');
 const LoginGovService = require('../../services/LoginGovService');
-const {Session, LoginStats, Person} = require('../../models');
+const {Session, LoginStats, Person, PublicKey} = require('../../models');
 const { Op } = require("sequelize");
 const moment = require('moment');
 const _ = require('lodash');
@@ -16,7 +16,7 @@ const Cipher = require('../../utils/Cipher');
 // Scopes and roles-to-scopes mapping
 // TODO: These are here to serve as an example.
 const SCOPES = {
-	SUPER: 'prime.admin',
+	SUPER: 'prime.*.write',
 	SCHEMA_WRITE: 'prime.schema.write',
 	SCHEMA_READ: 'prime.schema.read',
 	USERS_WRITE: 'prime.users.write',
@@ -246,8 +246,6 @@ var SeshAPI = {
 			scopes: allowedScopes
 		});
 
-		Logger.debug('Leaving session register..');
-
 	},
 
 	// ///////////////////////////////////////////////////////////////////////////////////////
@@ -255,6 +253,8 @@ var SeshAPI = {
 	// http://hl7.org/fhir/uv/bulkdata/authorization/index.html
 	async login(req, res){
 				
+		Logger.debug('Entering login ', req.body);
+
 		/*
 		let opts = {
             grant_type: 'client_credentials',
@@ -264,6 +264,10 @@ var SeshAPI = {
 			exp: claims.exp
 		};
 		*/
+
+        if (!req.body.key_id){
+            throw new ParamError('You must pass a the key_id, the key slug');
+        }
 
 		// See https://github.com/auth0/node-jsonwebtoken
 
@@ -275,13 +279,56 @@ var SeshAPI = {
             throw new ParamError('You must pass a the correct grant_type');
 		}
 
-		// TODO: fetch public key
-		const secretOrPublicKey = '';
+		// Find the public key
+		let publicKey = await PublicKey.findOne({
+			where: {
+				slug: req.body.key_id
+			},
+			raw: true
+		})
+
+		if (!publicKey){
+			throw new AuthError(`Could not find a key with id of ${req.body.key_id}`);
+		}
+
+		// TODO: fetch public key from url if required
+		if (!publicKey.contents){
+			throw new AuthError(`This registered public key has no contents`);
+		}
+
 
 		// Verify token with share public key
-		jwt.verify(req.body.client_assertion, secretOrPublicKey, {
-			algorithms: ['RS384'],
+		let decoded = jwt.verify(req.body.client_assertion, publicKey.contents, {
+			algorithms: ['RS384']
 		})
+
+		// Logger.debug(decoded)
+		
+		if (!decoded){
+			// the jwt.verify should throw, but if not and we didn't decode then throw
+			throw new AuthError("Bad jwt token");
+		}
+
+		// Generate a session
+
+		// Create session
+		const sesh = await Session.create({
+			personId: publicKey.id,
+			scopes: (publicKey.scopes) ? publicKey.scopes.split(',') : null,
+			expires: moment().add(process.env.TOKEN_DURATION, 'minutes'),
+			token: crypto.randomBytes(64).toString('hex'),
+			ip: requestIp.getClientIp(req)
+		});
+		
+		res.json({ 
+			access_token: sesh.token, 
+			expires: sesh.expires, 
+			token_type: 'bearer' , 
+			expires_in: process.env.TOKEN_DURATION*60,
+			scopes: publicKey.scopes
+		});
+
+
 
 		/*
 		// verify a token asymmetric
@@ -321,6 +368,7 @@ var SeshAPI = {
 		});
 
 		*/
+
 	},
 
 	// ///////////////////////////////////////////////////////////////////////////////////////

@@ -1,7 +1,6 @@
 <template>
 
     <div v-if="org && mode=='view'">
-
         <us-card :title="org.name" :img-src="org.icon" img-pos="left">
             <us-card-header>
                 <us-button class="float-right" variant="link" @click="mode='edit'"><i class="fas fa-edit"></i></us-button>        
@@ -73,8 +72,20 @@ export default {
             key: null,
             mode: 'view'
         }
-    },   
+    }, 
     props: ['org'],
+    /* 
+    computed: {
+        org: {
+            get(){
+                return this.$store.state.org;
+            },
+            set(val){
+                this.$store.commit('setOrg', val);
+            }
+        }        
+    }, 
+    */
     methods: {
         async onSubmit(){
             await this.org.save();

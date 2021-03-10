@@ -29,6 +29,10 @@ class BaseModel {
 
     // ///////////////////////////////////////////////////////////////////////////////////////
 
+    getBaseUrl(){
+        return this._meta.baseUrl;
+    }
+
     async setSubPath(path){
         this._meta.subPath = path;
     }
