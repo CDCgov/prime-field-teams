@@ -1,9 +1,9 @@
 'use strict';
 const Logger = require('../../utils/Logger');
-const { PersonToOrganization } = require('../../models');
-const BaseAPI = require('./BaseAPI');
+const { PersonToOrganization, Person } = require('../../models');
 const ParamError = require('../../errors/ParamError');
 const AuthError = require('../../errors/AuthError');
+const Cipher = require('../../utils/Cipher');
 
 const PersonToOrgAPI = {
 
@@ -23,6 +23,30 @@ const PersonToOrgAPI = {
 		};
 
 		return await PersonToOrganization.findOne({where: qry});			
+	},
+
+	// ///////////////////////////////////////////////////////////////////////////////////////
+
+	async getAll(req, res){
+		
+		let peeps = await Person.findAll({
+			where: {},
+			includes: {
+                model: PersonToOrganization,
+                where: {organizationId: req.org.id},
+			},
+			attributes: ['uuid', 'fullName', 'fullName_encrypted', 'id', 'lastLogin', 'level', 'status'],
+			raw: true,
+			nest: true
+		});
+
+		// Decrypt the full names
+		for (let i=0; i<peeps.length; i+=1){
+			peeps[i].fullName = Cipher.decode(peeps[i].fullName_encrypted);
+		}
+	
+		res.json(peeps);
+
 	},
 
 	// ///////////////////////////////////////////////////////////////////////////////////////

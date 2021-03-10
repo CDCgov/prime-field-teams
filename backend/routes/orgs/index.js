@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const orgApi = require('./org-api');
 const keyApi = require('./key-api');
+const person2Org = require('./person-to-org-api');
 const schemaApi = require('./schema-api');
 const schemaFieldApi = require('./schema-field-api');
 const schemaMapApi = require('./schema-mapping-api');
@@ -18,6 +19,7 @@ router.delete('/:orgId', auth.isSuper, orgApi.load, orgApi.destroy);
 router.post('', auth.isSuper, orgApi.create);
 
 // Managing org users 
+router.get('/:orgId/person', auth.isOrgAdmin, orgApi.load, person2Org.getAll);
 //router.post('/:orgId/person/:personId', auth.isOrgAdmin, person2OrgApi.addPerson);
 //router.put('/:orgId/person/:personId', auth.isOrgAdmin, person2OrgApi.update);
 //router.delete('/:orgId/person/:personId', auth.isOrgAdmin, person2OrgApi.removePerson);

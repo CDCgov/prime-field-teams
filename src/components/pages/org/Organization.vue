@@ -35,7 +35,7 @@
             <us-col>
                 <org-info v-if="link == 'info'" :org="org"></org-info>
                 <org-keys v-if="link == 'keys'" :org="org"></org-keys>
-                <div v-if="link == 'users'">TBD</div>
+                <org-users v-if="link == 'users'" :org="org"/>
                 <key-generator v-if="link == 'key-gen'"/>
             </us-col>
 
@@ -46,13 +46,14 @@
 </template>
 <script>
 import Organization from '../../../models/Organization';
+import OrgUsers from './OrgUsers';
 import OrgKeys from './OrgKeys';
 import OrgInfo from './OrgInfo';
 import KeyGenerator from './KeyGenerator';
 
 export default {
     name: "organization",
-    components: {OrgKeys, OrgInfo, KeyGenerator},
+    components: {OrgKeys, OrgInfo, KeyGenerator, OrgUsers},
     data(){
         return {
             link: 'info'

@@ -44,7 +44,7 @@ module.exports = function(sequelize) {
         phoneNumber_encrypted: Sequelize.STRING,
         phoneNumber: Cipher.registerField('phoneNumber'),
 
-        role: { type: Sequelize.ENUM('staff', 'resident', 'student', 'visitor', 'unknown') },
+        //role: { type: Sequelize.ENUM('staff', 'resident', 'student', 'visitor', 'unknown') },
         ethnicity: Sequelize.STRING,
         gender: Sequelize.STRING,
         //residentCongregateSetting: {type: Sequelize.BOOLEAN, defaultValue: false},
