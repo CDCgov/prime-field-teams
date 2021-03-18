@@ -1,0 +1,240 @@
+<channel version="3.10.1">
+  <id>1a57aa19-79a7-4ba9-ae28-195a449e0e75</id>
+  <nextMetaDataId>2</nextMetaDataId>
+  <name>Output to Prime Report Stream API</name>
+  <description></description>
+  <revision>2</revision>
+  <sourceConnector version="3.10.1">
+    <metaDataId>0</metaDataId>
+    <name>sourceConnector</name>
+    <properties class="com.mirth.connect.connectors.vm.VmReceiverProperties" version="3.10.1">
+      <pluginProperties/>
+      <sourceConnectorProperties version="3.10.1">
+        <responseVariable>None</responseVariable>
+        <respondAfterProcessing>true</respondAfterProcessing>
+        <processBatch>false</processBatch>
+        <firstResponse>false</firstResponse>
+        <processingThreads>1</processingThreads>
+        <resourceIds class="linked-hash-map">
+          <entry>
+            <string>Default Resource</string>
+            <string>[Default Resource]</string>
+          </entry>
+        </resourceIds>
+        <queueBufferSize>1000</queueBufferSize>
+      </sourceConnectorProperties>
+    </properties>
+    <transformer version="3.10.1">
+      <elements/>
+      <inboundDataType>RAW</inboundDataType>
+      <outboundDataType>RAW</outboundDataType>
+      <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.10.1">
+        <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.10.1">
+          <splitType>JavaScript</splitType>
+          <batchScript></batchScript>
+        </batchProperties>
+      </inboundProperties>
+      <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.10.1">
+        <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.10.1">
+          <splitType>JavaScript</splitType>
+          <batchScript></batchScript>
+        </batchProperties>
+      </outboundProperties>
+    </transformer>
+    <filter version="3.10.1">
+      <elements/>
+    </filter>
+    <transportName>Channel Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <waitForPrevious>true</waitForPrevious>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector version="3.10.1">
+      <metaDataId>1</metaDataId>
+      <name>PRIME Data Hub CSV</name>
+      <properties class="com.mirth.connect.connectors.http.HttpDispatcherProperties" version="3.10.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.10.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <host>$PRIME_REPORT_STREAM_API_ENDPOINT</host>
+        <useProxyServer>false</useProxyServer>
+        <proxyAddress></proxyAddress>
+        <proxyPort></proxyPort>
+        <method>post</method>
+        <headers class="linked-hash-map">
+          <entry>
+            <string>client</string>
+            <list>
+              <string>tcp</string>
+            </list>
+          </entry>
+          <entry>
+            <string>x-functions-key</string>
+            <list>
+              <string>$PRIME_REPORT_STREAM_API_KEY</string>
+            </list>
+          </entry>
+        </headers>
+        <parameters class="linked-hash-map"/>
+        <useHeadersVariable>false</useHeadersVariable>
+        <headersVariable></headersVariable>
+        <useParametersVariable>false</useParametersVariable>
+        <parametersVariable></parametersVariable>
+        <responseXmlBody>false</responseXmlBody>
+        <responseParseMultipart>true</responseParseMultipart>
+        <responseIncludeMetadata>false</responseIncludeMetadata>
+        <responseBinaryMimeTypes></responseBinaryMimeTypes>
+        <responseBinaryMimeTypesRegex>true</responseBinaryMimeTypesRegex>
+        <multipart>false</multipart>
+        <useAuthentication>false</useAuthentication>
+        <authenticationType>Basic</authenticationType>
+        <usePreemptiveAuthentication>false</usePreemptiveAuthentication>
+        <username></username>
+        <password></password>
+        <content>${message.rawData}</content>
+        <contentType>text/csv</contentType>
+        <dataTypeBinary>false</dataTypeBinary>
+        <charset>NONE</charset>
+        <socketTimeout>30000</socketTimeout>
+      </properties>
+      <transformer version="3.10.1">
+        <elements/>
+        <inboundTemplate encoding="base64"></inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.10.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.10.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.10.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.10.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.10.1">
+        <elements>
+          <com.mirth.connect.plugins.javascriptstep.JavaScriptStep version="3.10.1">
+            <sequenceNumber>0</sequenceNumber>
+            <enabled>true</enabled>
+            <script>if(!msg[&apos;id&apos;]) {
+	responseStatus = ERROR;
+	responseStatusMessage = &apos;An error was reported by PRIME Report Stream while submitting data.  &apos; + msg[&apos;errorCount&apos;] + 
+		&apos; errors and &apos; +  msg[&apos;warningCount&apos;] + &apos; warnings.&apos;;
+	responseErrorMessage = &apos;Errors: \n&apos; + JSON.stringify(msg[&apos;errors&apos;]) + &quot;\nWarnings\n&quot; + JSON.stringify(msg[&apos;warnings&apos;]);
+	alerts.sendAlert(responseStatusMessage + &apos;\n&apos; + responseErrorMessage);
+	logger.error(responseStatusMessage);
+} else {
+	responseStatusMessage = &apos;Report submitted to PRIME Report Stream with ID &apos; + msg[&apos;id&apos;] + &apos;.  &apos; + msg[&apos;errorCount&apos;] + 
+		&apos; errors and &apos; +  msg[&apos;warningCount&apos;] + &apos; warnings.&apos;;
+	logger.info(responseStatusMessage);
+}</script>
+          </com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
+        </elements>
+        <inboundTemplate encoding="base64">ewogICAgImlkIjogbnVsbCwKICAgICJ3YXJuaW5nQ291bnQiOiAwLAogICAgImVycm9yQ291bnQiOiA2LAogICAgImVycm9ycyI6IFsKICAgICAgICB7CiAgICAgICAgICAgICJzY29wZSI6ICJJVEVNIiwKICAgICAgICAgICAgImlkIjogInJvdzkiLAogICAgICAgICAgICAiZGV0YWlscyI6ICJFbXB0eSB2YWx1ZSBmb3IgJ3BhdGllbnRfbGFzdF9uYW1lJyIKICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICAgInNjb3BlIjogIklURU0iLAogICAgICAgICAgICAiaWQiOiAicm93OSIsCiAgICAgICAgICAgICJkZXRhaWxzIjogIkVtcHR5IHZhbHVlIGZvciAnbWVzc2FnZV9pZCciCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAgICJzY29wZSI6ICJJVEVNIiwKICAgICAgICAgICAgImlkIjogInJvdzkiLAogICAgICAgICAgICAiZGV0YWlscyI6ICJFbXB0eSB2YWx1ZSBmb3IgJ3BhdGllbnRfc3RhdGUnIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgICAic2NvcGUiOiAiSVRFTSIsCiAgICAgICAgICAgICJpZCI6ICJyb3c5IiwKICAgICAgICAgICAgImRldGFpbHMiOiAiRW1wdHkgdmFsdWUgZm9yICd0ZXN0aW5nX2xhYl9jbGlhJyIKICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICAgInNjb3BlIjogIklURU0iLAogICAgICAgICAgICAiaWQiOiAicm93OSIsCiAgICAgICAgICAgICJkZXRhaWxzIjogIkVtcHR5IHZhbHVlIGZvciAnb3JkZXJpbmdfZmFjaWxpdHlfc3RhdGUnIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgICAic2NvcGUiOiAiSVRFTSIsCiAgICAgICAgICAgICJpZCI6ICJyb3c5IiwKICAgICAgICAgICAgImRldGFpbHMiOiAiRW1wdHkgdmFsdWUgZm9yICdvcmRlcmluZ19mYWNpbGl0eV9waG9uZV9udW1iZXInIgogICAgICAgIH0KICAgIF0sCiAgICAid2FybmluZ3MiOiBbXQp9</inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
+        <inboundDataType>JSON</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.json.JSONDataTypeProperties" version="3.10.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.json.JSONBatchProperties" version="3.10.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.10.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.10.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.10.1">
+        <elements/>
+      </filter>
+      <transportName>HTTP Sender</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>true</waitForPrevious>
+    </connector>
+  </destinationConnectors>
+  <preprocessingScript>// Modify the message variable below to pre process data
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+// Responses returned from here will be stored as &quot;Postprocessor&quot; in the response map
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</deployScript>
+  <undeployScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</undeployScript>
+  <properties version="3.10.1">
+    <clearGlobalChannelMap>true</clearGlobalChannelMap>
+    <messageStorageMode>DEVELOPMENT</messageStorageMode>
+    <encryptData>false</encryptData>
+    <removeContentOnCompletion>false</removeContentOnCompletion>
+    <removeOnlyFilteredOnCompletion>false</removeOnlyFilteredOnCompletion>
+    <removeAttachmentsOnCompletion>false</removeAttachmentsOnCompletion>
+    <initialState>STARTED</initialState>
+    <storeAttachments>false</storeAttachments>
+    <metaDataColumns>
+      <metaDataColumn>
+        <name>SOURCE</name>
+        <type>STRING</type>
+        <mappingName>mirth_source</mappingName>
+      </metaDataColumn>
+      <metaDataColumn>
+        <name>TYPE</name>
+        <type>STRING</type>
+        <mappingName>mirth_type</mappingName>
+      </metaDataColumn>
+    </metaDataColumns>
+    <attachmentProperties version="3.10.1">
+      <type>None</type>
+      <properties/>
+    </attachmentProperties>
+    <resourceIds class="linked-hash-map">
+      <entry>
+        <string>Default Resource</string>
+        <string>[Default Resource]</string>
+      </entry>
+    </resourceIds>
+  </properties>
+  <exportData>
+    <metadata>
+      <enabled>true</enabled>
+      <lastModified>
+        <time>1615478949686</time>
+        <timezone>America/New_York</timezone>
+      </lastModified>
+      <pruningSettings>
+        <pruneMetaDataDays>30</pruneMetaDataDays>
+        <pruneContentDays>30</pruneContentDays>
+        <archiveEnabled>false</archiveEnabled>
+      </pruningSettings>
+    </metadata>
+  </exportData>
+</channel>

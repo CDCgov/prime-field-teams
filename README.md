@@ -1,6 +1,7 @@
-# CDCgov GitHub Organization Open Source Project Template
+# CDCgov Field Teams Repo
 
-**Template for clearance: This project serves as a template to aid projects in starting up and moving through clearance procedures. To start, create a new repository and implement the required [open practices](open_practices.md), train on and agree to adhere to the organization's [rules of behavior](rules_of_behavior.md), and [send a request through the create repo form](https://forms.office.com/Pages/ResponsePage.aspx?id=aQjnnNtg_USr6NJ2cHf8j44WSiOI6uNOvdWse4I-C2NUNk43NzMwODJTRzA4NFpCUk1RRU83RTFNVi4u) using language from this template as a Guide.**
+## Prime Data Automation Technical Assistance Program Folders
+- [nextgen-connect](nextgen-connect) - A collection of resources related to the[NextGen Connect (aka Mirth Connect) integration engine](https://github.com/nextgenhealthcare/connect) with documents and code that can be reused by healthcare entities for the reporting of infectious diseases to [PRIME ReportStream ](https://github.com/CDCgov/prime-data-hub).
 
 **General disclaimer** This repository was created for use by CDC programs to collaborate on public health related projects in support of the [CDC mission](https://www.cdc.gov/about/organization/mission.htm).  GitHub is not hosted by the CDC, but is a third party website used by CDC and its partners to share information and collaborate on software. CDC use of GitHub does not imply an endorsement of any one particular service, product, or enterprise. 
 
@@ -12,7 +13,6 @@
 
 * [Open Practices](open_practices.md)
 * [Rules of Behavior](rules_of_behavior.md)
-* [Thanks and Acknowledgements](thanks.md)
 * [Disclaimer](DISCLAIMER.md)
 * [Contribution Notice](CONTRIBUTING.md)
 * [Code of Conduct](code-of-conduct.md)
