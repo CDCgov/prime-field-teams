@@ -1,0 +1,298 @@
+Patient ID,Patient Name,DOB,Patient Age,Race,Provider,Patient Address1,Patient City,Patient State,Patient ZIP,Patient Phone,Reported As,Appr Date,LOINC,Test,Result-Level SNOMED Codes,Sample ID,Draw Date,Sample Type,Clinical Info,Insurance Company,Appr By,Clinical Info,Testing Location
+123451,Kris Cornish,9/4/2020,181d,Caucasian,"Antley, ARNP, Mona",9999 Some Street Rd,Tallahassee,FL,32308,999-999-9999x9999,SARS-CoV-2 RNA Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,840533007,5463361,3/2/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		y  3/1 
+2) Has the patient been hospitalized?		[Required]		n 
+3) Has the patient been in ICU?		[Required]		n 
+4) Is the patient pregnant?		[Required]		n 
+5) Is the patient employed in Healthcare?		[Required]		n 
+6) Is this the patient's first test?		[Required]		y 
+7) Resident of a nursing home?		[Required]		n 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		n",TPCA Laboratory
+123452,Dhruv Odom,6/5/2017,3,Caucasian,"Antley, ARNP, Mona",9999 Some Street Rd,TALLAHASSEE,FL,32312,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463649,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		y  3/1/21 
+2) Has the patient been hospitalized?		[Required]		n 
+3) Has the patient been in ICU?		[Required]		n 
+4) Is the patient pregnant?		[Required]		u 
+5) Is the patient employed in Healthcare?		[Required]		n 
+6) Is this the patient's first test?		[Required]		y 
+7) Resident of a nursing home?		[Required]		n 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		n",TPCA Laboratory
+123453,Ralphie Hensley,1/24/2020,1,Caucasian,"Antley, ARNP, Mona",9999 Some Street Rd,HAVANA,FL,32333,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463866,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		y  3/2/21 
+2) Has the patient been hospitalized?		[Required]		n 
+3) Has the patient been in ICU?		[Required]		n 
+4) Is the patient pregnant?		[Required]		n 
+5) Is the patient employed in Healthcare?		[Required]		n 
+6) Is this the patient's first test?		[Required]		n 
+7) Resident of a nursing home?		[Required]		n 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		n",TPCA Laboratory
+123454,Ruairi Mercado,10/23/1983,37,Black,"Gamble, MD, Terreze",9999 Some Street Rd,Tallahassee,FL,32303,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5462924,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y: 02/25/21 
+2) Has the patient been hospitalized?		[Required]		n 
+3) Has the patient been in ICU?		[Required]		n 
+4) Is the patient pregnant?		[Required]		n 
+5) Is the patient employed in Healthcare?		[Required]		n 
+6) Is this the patient's first test?		[Required]		n 
+7) Resident of a nursing home?		[Required]		n 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		n",TPCA Laboratory
+123455,Rehaan Parra,2/25/1982,39,Caucasian,"Groll, MD, Stacia K.",9999 Some Street Rd,TALLAHASSEE,FL,32312,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463573,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		no 
+2) Has the patient been hospitalized?		[Required]		n 
+3) Has the patient been in ICU?		[Required]		n 
+4) Is the patient pregnant?		[Required]		n 
+5) Is the patient employed in Healthcare?		[Required]		n 
+6) Is this the patient's first test?		[Required]		n 
+7) Resident of a nursing home?		[Required]		n 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		nasal",TPCA Laboratory
+123456,David Beech,1/21/1991,30,Asian,"Groll, MD, Stacia K.",9999 Some Street Rd,Tallahassee,FL,32309,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463578,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		no 
+2) Has the patient been hospitalized?		[Required]		no 
+3) Has the patient been in ICU?		[Required]		no 
+4) Is the patient pregnant?		[Required]		no 
+5) Is the patient employed in Healthcare?		[Required]		no 
+6) Is this the patient's first test?		[Required]		no 
+7) Resident of a nursing home?		[Required]		no 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		nasal",TPCA Laboratory
+123457,Nell Blackmore,6/12/1988,32,Caucasian,"Hartsfield, MD, Paul",9999 Some Street Rd,Tallahassee,FL,32304,999-999-9999,SARS-CoV-2 RNA Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,840533007,5463154,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		yes-started over the weekend 
+2) Has the patient been hospitalized?		[Required]		no 
+3) Has the patient been in ICU?		[Required]		no 
+4) Is the patient pregnant?		[Required]		no 
+5) Is the patient employed in Healthcare?		[Required]		no 
+6) Is this the patient's first test?		[Required]		no 
+7) Resident of a nursing home?		[Required]		no 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		np",TPCA Laboratory
+123458,Ellen Mora,5/30/1995,25,Caucasian,"Hartsfield, MD, Paul",9999 Some Street Rd,TALLAHASSEE,FL,32310,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463503,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		unk 
+2) Has the patient been hospitalized?		[Required]		unk 
+3) Has the patient been in ICU?		[Required]		unk 
+4) Is the patient pregnant?		[Required]		unk 
+5) Is the patient employed in Healthcare?		[Required]		unk 
+6) Is this the patient's first test?		[Required]		unk 
+7) Resident of a nursing home?		[Required]		unk 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		nasal",TPCA Laboratory
+123459,Roseanne Higgs,9/4/1993,27,Caucasian,"Hogan, MD, Patricia",9999 Some Street Rd,TALLAHASSEE,FL,32312,999-999-9999,SARS-CoV-2 RNA Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,840533007,5463403,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y, 2/27/2021 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		Y 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		Nasal",TPCA Laboratory
+123460,Deen Valentine,1/23/2020,1,N/A,"Long, MD, Charles",9999 Some Street Rd,Tallahassee,FL,32303,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463582,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y 2/27/2021 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NASAL",TPCA Laboratory
+123461,Adela Reyna,1/5/2005,16,Caucasian,"Long, MD, Charles",9999 Some Street Rd,Tallahassee,FL,32308,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463698,3/3/2021,NASALS,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y, 02/28/2021 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		Y 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NASAL",TPCA Laboratory
+123462,Luna Paul,2/20/2013,8,Black,"Mitchell, MD, Raquel",9999 Some Street Rd,TALLAHASSEE,FL,32317-9047,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463388,3/2/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y 02/25/2021 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		Y 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NP",TPCA Laboratory
+123463,Iylah Nash,8/1/2016,4,Asian,"Mitchell, MD, Raquel",9999 Some Street Rd,QUINCY,FL,32352,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463687,3/3/2021,NASALS,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y, 02/28/2021 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NASAL",TPCA Laboratory
+123464,Farhana Key,1/15/2018,3,Asian,"Mitchell, MD, Raquel",9999 Some Street Rd,QUINCY,FL,32352,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463688,3/3/2021,NASALS,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y, 02/24/2021 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		Y 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NASAL",TPCA Laboratory
+123465,Bethaney Noel,7/3/1957,63,Asian,"Perry, MD, Gregory",9999 Some Street Rd,TALLAHASSEE,FL,32317,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463575,3/3/2021,NOS,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y, 02/24/21 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NP",TPCA Laboratory
+123466,Kady Byrne,10/22/1994,26,Black,"Rosner, MD, Laura",9999 Some Street Rd,TALLAHASSEE,FL,32317,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5462697,3/2/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y 02/25/2021 
+2) Has the patient been hospitalized?		[Required]		n 
+3) Has the patient been in ICU?		[Required]		n 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NP",TPCA Laboratory
+123467,Areebah James,7/30/1989,31,Asian,"Rosner, MD, Laura",9999 Some Street Rd,QUINCY,FL,32351,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5462553,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		N 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NP",TPCA Laboratory
+123468,Mackenzie Pruitt,9/25/1946,74,Caucasian,"Rosner, MD, Laura",9999 Some Street Rd,Tallahassee,FL,32309,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463384,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		N 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NP",TPCA Laboratory
+123469,Eliott Ahmed,10/11/2004,16,Caucasian,"Rosner, MD, Laura",9999 Some Street Rd,TALLAHASSEE,FL,32312,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463131,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y, 03/27/2021 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NP",TPCA Laboratory
+123470,Joanne Wilkerson,7/22/1961,59,Caucasian,"Rosner, MD, Laura",9999 Some Street Rd,Tallahassee,FL,32303-4509,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463591,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		y, 03/01/2021 
+2) Has the patient been hospitalized?		[Required]		n 
+3) Has the patient been in ICU?		[Required]		n 
+4) Is the patient pregnant?		[Required]		n 
+5) Is the patient employed in Healthcare?		[Required]		n 
+6) Is this the patient's first test?		[Required]		n 
+7) Resident of a nursing home?		[Required]		n 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		np",TPCA Laboratory
+123471,Hasnain Albert,9/16/1960,60,Caucasian,"Rosner, MD, Laura",9999 Some Street Rd,TALLAHASSEE,FL,32310,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463712,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		N 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NP",TPCA Laboratory
+123472,Rihanna Cook,1/24/2020,1,Black,"Simmons, MD, Kathryn",9999 Some Street Rd,Tallahassee,FL,32303,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463251,3/2/2021,NASALS,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		yes - 2/28/21 
+2) Has the patient been hospitalized?		[Required]		n 
+3) Has the patient been in ICU?		[Required]		n 
+4) Is the patient pregnant?		[Required]		n 
+5) Is the patient employed in Healthcare?		[Required]		n 
+6) Is this the patient's first test?		[Required]		n 
+7) Resident of a nursing home?		[Required]		n 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		nasal",TPCA Laboratory
+123473,Sierra Mccray,6/5/2001,19,Black,"Simmons, MD, Kathryn",9999 Some Street Rd,TALLAHASSEE,FL,32303-5030,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463288,3/2/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y2/28/2021 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		N",TPCA Laboratory
+123474,Shahzaib Silva,6/14/2013,7,Caucasian,"Simmons, MD, Kathryn",9999 Some Street Rd,Tallahassee,FL,32309,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463298,3/2/2021,NASALS,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y, 03/02/2021 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		Y 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NASAL",TPCA Laboratory
+123475,Jazmine Greaves,4/4/2007,13,Caucasian,"Simmons, MD, Kathryn",9999 Some Street Rd,Tallahassee,FL,32303,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463354,3/2/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		unk 
+9) What is the source?		[Required]		NP",TPCA Laboratory
+123476,Mikayla Donald,6/24/2015,5,Caucasian,"Singh, MD, J. C.",9999 Some Street Rd,TALLAHASSEE,FL,32312,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5461431,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		no 
+2) Has the patient been hospitalized?		[Required]		no 
+3) Has the patient been in ICU?		[Required]		no 
+4) Is the patient pregnant?		[Required]		no 
+5) Is the patient employed in Healthcare?		[Required]		no 
+6) Is this the patient's first test?		[Required]		no 
+7) Resident of a nursing home?		[Required]		no 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		np",TPCA Laboratory
+123477,Willow Wilder,6/24/2015,5,Caucasian,"Singh, MD, J. C.",9999 Some Street Rd,TALLAHASSEE,FL,32312,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5461429,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		no 
+2) Has the patient been hospitalized?		[Required]		no 
+3) Has the patient been in ICU?		[Required]		no 
+4) Is the patient pregnant?		[Required]		no 
+5) Is the patient employed in Healthcare?		[Required]		no 
+6) Is this the patient's first test?		[Required]		no 
+7) Resident of a nursing home?		[Required]		no 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		np",TPCA Laboratory
+123478,Glyn Mcdonald,7/7/2009,11,Other,"Steverson, MD, Rebekah",9999 Some Street Rd,TALLAHASSEE,FL,32305-7641,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463405,3/3/2021,NASALS,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y, 02/27/2021 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		Y 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NASAL",TPCA Laboratory
+123479,Emrys Phillips,4/3/1956,64,Caucasian,"VanLandingham, MD, Cody",9999 Some Street Rd,TALLAHASSEE,FL,32303-7304,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463233,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		N 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NP",TPCA Laboratory
+123480,Zackery Holland,2/26/2003,18,Asian,"VanLandingham, MD, Hugh",9999 Some Street Rd,Tallahassee,FL,32308,999-999-9999,SARS-CoV-2 RNA Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,840533007,5463287,3/2/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y, 02/28/2021 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		NP"
+123481,Lester Pike,11/16/1994,26,Caucasian,"Winchester, MD, Gary",9999 Some Street Rd,Tallahassee,FL,32308,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5462782,3/2/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		n 
+2) Has the patient been hospitalized?		[Required]		n 
+3) Has the patient been in ICU?		[Required]		n 
+4) Is the patient pregnant?		[Required]		n 
+5) Is the patient employed in Healthcare?		[Required]		n 
+6) Is this the patient's first test?		[Required]		n 
+7) Resident of a nursing home?		[Required]		n 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		nasal",TPCA Laboratory
+123482,Lubna Mair,7/26/1984,36,Caucasian,"Winchester, MD, Gary",9999 Some Street Rd,TALLAHASSEE,FL,32312,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463552,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		Y 
+2) Has the patient been hospitalized?		[Required]		N 
+3) Has the patient been in ICU?		[Required]		N 
+4) Is the patient pregnant?		[Required]		N 
+5) Is the patient employed in Healthcare?		[Required]		N 
+6) Is this the patient's first test?		[Required]		N 
+7) Resident of a nursing home?		[Required]		N 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		nasal",TPCA Laboratory
+123483,Meerab Foster,9/25/1995,25,Caucasian,"Zorn, MD, Thomas Austin",9999 Some Street Rd,TALLAHASSEE,FL,32312,999-999-9999,SARS-CoV-2 RNA Not Detected,3/3/2021,95941-1,SARS-CoV-2 PCR RNA,260385009,5463505,3/3/2021,Nasal,Capital Health Plan,System,"1) Is the Patient Symtomatic?		[Required]		no 
+2) Has the patient been hospitalized?		[Required]		no 
+3) Has the patient been in ICU?		[Required]		no 
+4) Is the patient pregnant?		[Required]		no 
+5) Is the patient employed in Healthcare?		[Required]		no 
+6) Is this the patient's first test?		[Required]		no 
+7) Resident of a nursing home?		[Required]		no 
+8) Date of first symptom		[Required]		__________ 
+9) What is the source?		[Required]		np",TPCA Laboratory

@@ -1,0 +1,9 @@
+ID,Name,Birth Date,Age,Race,Preferred Caregiver,Street,City,State,Zip,Phone,"Lab Result Value Equals, Days (Lab Catalog)",Result Date
+111,Joyhn dsf,4/27/1979,41 years,White,"Cody VanLandingham, MD",999 Street,Talla,FL,32955,999-999-9999,"INFLUENZA A (IN HOUSE ONLY): Negative
+INFLUENZA B (IN HOUSE ONLY): Negative
+Covid, Rapid, Office, single: Positive","3/24/2021
+3/24/2021
+3/24/2021"
+222,Kevin Smith,4/19/2017,3 years 11 months,White,"Greg Perry, MD",999 Street,Talla,FL,32955,999-999-9999,"INFLUENZA A (IN HOUSE ONLY): Negative
+INFLUENZA B (IN HOUSE ONLY): Negative","3/24/2021
+3/24/2021"
