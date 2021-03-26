@@ -5,9 +5,12 @@ This channel takes in a CSV export from Orchard Harvest and normalizes the clini
 ## Channel Configuration
 The following configuration map entries are required for this channel:
 - ORCHARD_REPORT_DIR - the folder to look for the CSV export file
-- ORCHARD_REPORT_FILENAME_PREFIX - the prefix of the CSV export file.  The expected filename is ```<ORCHARD_REPORT_FILENAME_PREFIX>*.csv```
+- ORCHARD_REPORT_FILENAME - the filename of the export file.  Can be a wildcard and it is case sensitive.  E.g. ```orchard-export*```
 
-## Orchard Harvest CSV Export Format
+## Filter
+The filter ensures that only files with two lines or more (header row plus records) are processed.  An INFO message is logged if a file is filtered.
+
+## Orchard Harvest CSV Input Format
 The export expected by this channel includes a header row, subsequest records one per row, each record has the following fields in this order.  Note the field header names are ignored.
 
 1. Patient ID
@@ -46,11 +49,11 @@ The following fields are transformed from the original Orchard Harvest CSV expor
 
 1. Patient ID
 1. Patient Name
-1. DOB 
+1. Patient DOB 
 1. Patient Age
-1. Race
+1. Patient Race
 1. Provider
-1. Patient Address1
+1. Patient Address
 1. Patient City 
 1. Patient State
 1. Patient ZIP
@@ -71,9 +74,6 @@ The following fields are transformed from the original Orchard Harvest CSV expor
 1. ICU? - Has the patient been in ICU? (Y, N or blank if unknown)
 1. Nsg Home? - Resident of a congregate care setting? (Y, N or blank if unknown)
 1. Preg? - Is the patient pregnant? (Y, N or blank if unknown)
-
-## Filter
-The filter ensures that only files with two lines or more (header row plus records) are processed.  An INFO message is logged if a file is filtered.
 
 ## Error handling
 If there is an error opening the file then the file is moved to the error folder within the ORCHARD_REPORT_DIR folder.  If the file was read successfully it is moved to the processed folder within the ORCHARD_REPORT_DIR folder.

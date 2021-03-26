@@ -1,9 +1,9 @@
 <channel version="3.10.1">
   <id>509940e1-8258-440d-8d30-ea71a4e7d632</id>
-  <nextMetaDataId>4</nextMetaDataId>
+  <nextMetaDataId>5</nextMetaDataId>
   <name>Ingest Raw Orchard CSV Data</name>
   <description></description>
-  <revision>14</revision>
+  <revision>28</revision>
   <sourceConnector version="3.10.1">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>
@@ -11,8 +11,8 @@
       <pluginProperties/>
       <pollConnectorProperties version="3.10.1">
         <pollingType>INTERVAL</pollingType>
-        <pollOnStart>false</pollOnStart>
-        <pollingFrequency>1800000</pollingFrequency>
+        <pollOnStart>true</pollOnStart>
+        <pollingFrequency>900000</pollingFrequency>
         <pollingHour>0</pollingHour>
         <pollingMinute>0</pollingMinute>
         <cronJobs/>
@@ -52,7 +52,7 @@
       </sourceConnectorProperties>
       <scheme>FILE</scheme>
       <host>$ORCHARD_REPORT_DIR</host>
-      <fileFilter>${ORCHARD_REPORT_FILENAME_PREFIX}*.csv</fileFilter>
+      <fileFilter>${ORCHARD_REPORT_FILENAME}</fileFilter>
       <regex>false</regex>
       <directoryRecursion>false</directoryRecursion>
       <ignoreDot>true</ignoreDot>
@@ -191,15 +191,24 @@
                 <defaultValue></defaultValue>
                 <replacements/>
               </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Patient Phone</name>
+              <com.mirth.connect.plugins.javascriptstep.JavaScriptStep version="3.10.1">
+                <name>Patient Phone Number without extension</name>
                 <sequenceNumber>0-11</sequenceNumber>
                 <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column11&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column11&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
+                <script>//Remove any extension from the phone number
+ var phone = validate(msg[&apos;row&apos;][i][&apos;column11&apos;].toString(), &apos;&apos;, new Array());
+ var cleanedPhone = &apos;&apos;;
+ if(phone) {
+ 	var extIndex = phone.toUpperCase().trim().indexOf(&apos;X&apos;);
+ 	if(extIndex &gt; 0) {
+ 		cleanedPhone = phone.trim().substr(0,extIndex);
+ 	} else {
+ 		cleanedPhone = phone;
+ 	}
+ }
+
+ tmp[&apos;row&apos;][i][&apos;column11&apos;] = cleanedPhone;</script>
+              </com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
               <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
                 <name>Result Description</name>
                 <sequenceNumber>0-12</sequenceNumber>
@@ -268,7 +277,7 @@
                 <sequenceNumber>0-19</sequenceNumber>
                 <enabled>true</enabled>
                 <messageSegment>tmp[&apos;row&apos;][i][&apos;column19&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column19&apos;].toString()</mapping>
+                <mapping>&apos;Nasal&apos;</mapping>
                 <defaultValue></defaultValue>
                 <replacements/>
               </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
@@ -276,7 +285,7 @@
                 <name>Decode Clinical Info</name>
                 <sequenceNumber>0-20</sequenceNumber>
                 <enabled>true</enabled>
-                <script>var clinicalInfo = validate(msg[&apos;row&apos;][i][&apos;column20&apos;].toString(), &apos;&apos;, new Array());
+                <script>var clinicalInfo = validate(msg[&apos;row&apos;][i][&apos;column22&apos;].toString(), &apos;&apos;, new Array());
 
 // Change yes or no answer to a normalized value
 function normalizeYesNoAnswer(input) {
@@ -292,15 +301,34 @@ function normalizeYesNoAnswer(input) {
 // Normalize any dates or empty if no date
 function normalizeDate(input) {
 	var retval = &apos;&apos;;
+	var fullDateFormatter = new Packages.java.text.SimpleDateFormat(&apos;M/d/y&apos;);
+	var shortDateFormatter = new Packages.java.text.SimpleDateFormat(&apos;M/d&apos;);
+
 	// Try extracting the date
 	try {
-		// The SimpleDateFormat takes care of converting two digit years to four digit
-		var DateFormatter = new Packages.java.text.SimpleDateFormat(&apos;M/d/y&apos;);
-		var date = DateFormatter.parse(input);
-		retval = DateFormatter.format(date); // Outputs as four digit year
+		// The SimpleDateFormat takes care of converting two digit years to four digit	
+		var date = fullDateFormatter.parse(input);
+		retval = fullDateFormatter.format(date); // Outputs as four digit year
 	} catch(ex) {
 		//Nothing to do
 	}
+
+	// If there was no date decoded, try a different date format
+	if(!retval) {
+		var now = new Date();
+		try {
+			var date = shortDateFormatter.parse(input);
+			date.setYear(now.getYear());
+	
+			// Make sure we do not get a date in the future
+			if(date.getTime() &gt; now.getTime()) {
+				date.setYear(now.getYear() - 1);
+			}
+			retval = fullDateFormatter.format(date); // Outputs as four digit current year 
+		} catch(ex) {
+			//Nothing to do
+		}
+	} 
 	return retval;
 }
 
@@ -329,12 +357,23 @@ if(clinicalInfo) {
 			if(question.includes(&apos;SYMTOMATIC&apos;)) {
 				// This answer can have a date or not, separated by some character like a comma, dash, etc. or not
 				var answerParts = answer.trim().split(&apos;[^A-Z0-9\\/]&apos;);
+				
 				//The first part is the Yes/No value
 				symtomatic = normalizeYesNoAnswer(answerParts[0]);
-				// If there is another part then it is the date of first symptoms
+				
+				// If there is another part then it is the date of first symptoms, but there may be other whitespaces at the end.
+				// Find the part that has a date if any
+				var dateString = &apos;&apos;;
+				var y;
+				for(y = answerParts.length - 1; y &gt; 0; y--) {
+					if(answerParts[y].indexOf(&quot;/&quot;) &gt;= 0) {
+						dateString = answerParts[y];
+						break;
+					}
+				}
 				// Also, make sure we do not overwrite a date already provided in another question
-				if(answerParts.length &gt; 1 &amp;&amp; !symtomaticDate) {
-					symtomaticDate = normalizeDate(answerParts[answerParts.length - 1]);
+				if(dateString &amp;&amp; !symtomaticDate) {
+					symtomaticDate = normalizeDate(dateString);
 				}
 			}
 			else if(question.includes(&apos;HOSPITALIZED&apos;)) {
@@ -343,7 +382,7 @@ if(clinicalInfo) {
 			else if(question.includes(&apos;ICU&apos;)) {
 				icu = normalizeYesNoAnswer(answer);
 			}
-			else if(question.includes(&apos;PATIENT PREGNANT&apos;)) {
+			else if(question.includes(&apos;PREGNANT&apos;)) {
 				pregnant = normalizeYesNoAnswer(answer);
 			}
 			else if(question.includes(&apos;EMPLOYED IN HEALTHCARE&apos;)) {
@@ -352,7 +391,7 @@ if(clinicalInfo) {
 			else if(question.includes(&apos;FIRST TEST&apos;)) {
 				firstTest = normalizeYesNoAnswer(answer);
 			}
-			else if(question.includes(&apos;CONGREGATE CARE SETTING&apos;)) {
+			else if(question.includes(&apos;NURSING HOME&apos;)) {
 				careResident = normalizeYesNoAnswer(answer);
 			}
 			else if(question.includes(&apos;FIRST SYMPTOM&apos;)) {
@@ -364,6 +403,12 @@ if(clinicalInfo) {
 		}
     
 	}
+
+	// Only set a symptomatic date if symptomatic is Y
+	if(!symtomatic || symtomatic != &apos;Y&apos;) {
+		symtomaticDate = &apos;&apos;;
+	}
+	
 //	logger.info(&apos;1:&apos; + symtomatic + &apos; 2:&apos; + symtomaticDate + &apos; 3:&apos; + hospitalized + &apos; 4:&apos; + icu + &apos; 5:&apos; + pregnant + &apos; 6:&apos; + healthcareWorker + &apos; 7:&apos; + firstTest + &apos; 8:&apos; + careResident);
 	tmp[&apos;row&apos;][i][&apos;column20&apos;] = firstTest;
 	tmp[&apos;row&apos;][i][&apos;column21&apos;] = healthcareWorker;
@@ -379,7 +424,7 @@ if(clinicalInfo) {
           </properties>
         </com.mirth.connect.model.IteratorStep>
       </elements>
-      <inboundTemplate encoding="base64">UGF0aWVudCBJRCxQYXRpZW50IE5hbWUsRE9CLFBhdGllbnQgQWdlLFJhY2UsUHJvdmlkZXIsUGF0aWVudCBBZGRyZXNzMSxQYXRpZW50IENpdHksUGF0aWVudCBTdGF0ZSxQYXRpZW50IFpJUCxQYXRpZW50IFBob25lLFJlcG9ydGVkIEFzLEFwcHIgRGF0ZSxMT0lOQyxUZXN0LFJlc3VsdC1MZXZlbCBTTk9NRUQgQ29kZXMsU2FtcGxlIElELERyYXcgRGF0ZSxTYW1wbGUgVHlwZSxDbGluaWNhbCBJbmZvCjk5OSxKb2huIERPZSw5LzQvMjAyMCwxODFkLENhdWNhc2lhbiwiQW50bGV5LCBBUk5QLCBNb25hIiwsVGFsbGFoYXNzZWUsRkwsMzIzMDgsLFNBUlMtQ29WLTIgUk5BIERldGVjdGVkLDMvMy8yMDIxLDk1OTQxLTEsU0FSUy1Db1YtMiBQQ1IgUk5BLDg0MDUzMzAwNyw1NDYzMzYxLDMvMi8yMDIxLE5hc2FsLCIxKSBJcyB0aGUgUGF0aWVudCBTeW10b21hdGljPwkJW1JlcXVpcmVkXQkJeSAgMy8xLzIxIAoyKSBIYXMgdGhlIHBhdGllbnQgYmVlbiBob3NwaXRhbGl6ZWQ/CQlbUmVxdWlyZWRdCQluIAozKSBIYXMgdGhlIHBhdGllbnQgYmVlbiBpbiBJQ1U/CQlbUmVxdWlyZWRdCQluIAo0KSBJcyB0aGUgcGF0aWVudCBwcmVnbmFudD8JCVtSZXF1aXJlZF0JCW4gCjUpIElzIHRoZSBwYXRpZW50IGVtcGxveWVkIGluIEhlYWx0aGNhcmU/CQlbUmVxdWlyZWRdCQluIAo2KSBJcyB0aGlzIHRoZSBwYXRpZW50J3MgZmlyc3QgdGVzdD8JCVtSZXF1aXJlZF0JCXkgCjcpIFJlc2lkZW50IG9mIGEgY29uZ3JlZ2F0ZSBjYXJlIHNldHRpbmc/CQlbUmVxdWlyZWRdCQluIAo4KSBEYXRlIG9mIGZpcnN0IHN5bXB0b20JCVtSZXF1aXJlZF0JCV9fX19fX19fX18gCjkpIFdoYXQgaXMgdGhlIHNvdXJjZT8JCVtSZXF1aXJlZF0JCW4iCjk5OSxKb2huIERPZSw2LzUvMjAxNywzLENhdWNhc2lhbiwiQW50bGV5LCBBUk5QLCBNb25hIiwsVEFMTEFIQVNTRUUsRkwsMzIzMTIsLFNBUlMtQ29WLTIgUk5BIE5vdCBEZXRlY3RlZCwzLzMvMjAyMSw5NTk0MS0xLFNBUlMtQ29WLTIgUENSIFJOQSwyNjAzODUwMDksNTQ2MzY0OSwzLzMvMjAyMSxOYXNhbCwiMSkgSXMgdGhlIFBhdGllbnQgU3ltdG9tYXRpYz8JCVtSZXF1aXJlZF0JCXkgIDMvMS8yMSAKMikgSGFzIHRoZSBwYXRpZW50IGJlZW4gaG9zcGl0YWxpemVkPwkJW1JlcXVpcmVkXQkJbiAKMykgSGFzIHRoZSBwYXRpZW50IGJlZW4gaW4gSUNVPwkJW1JlcXVpcmVkXQkJbiAKNCkgSXMgdGhlIHBhdGllbnQgcHJlZ25hbnQ/CQlbUmVxdWlyZWRdCQl1IAo1KSBJcyB0aGUgcGF0aWVudCBlbXBsb3llZCBpbiBIZWFsdGhjYXJlPwkJW1JlcXVpcmVkXQkJbiAKNikgSXMgdGhpcyB0aGUgcGF0aWVudCdzIGZpcnN0IHRlc3Q/CQlbUmVxdWlyZWRdCQl5IAo3KSBSZXNpZGVudCBvZiBhIGNvbmdyZWdhdGUgY2FyZSBzZXR0aW5nPwkJW1JlcXVpcmVkXQkJbiAKOCkgRGF0ZSBvZiBmaXJzdCBzeW1wdG9tCQlbUmVxdWlyZWRdCQlfX19fX19fX19fIAo5KSBXaGF0IGlzIHRoZSBzb3VyY2U/CQlbUmVxdWlyZWRdCQluIg==</inboundTemplate>
+      <inboundTemplate encoding="base64">UGF0aWVudCBJRCxQYXRpZW50IE5hbWUsRE9CLFBhdGllbnQgQWdlLFJhY2UsUHJvdmlkZXIsUGF0aWVudCBBZGRyZXNzMSxQYXRpZW50IENpdHksUGF0aWVudCBTdGF0ZSxQYXRpZW50IFpJUCxQYXRpZW50IFBob25lLFJlcG9ydGVkIEFzLEFwcHIgRGF0ZSxMT0lOQyxUZXN0LFJlc3VsdC1MZXZlbCBTTk9NRUQgQ29kZXMsU2FtcGxlIElELERyYXcgRGF0ZSxTYW1wbGUgVHlwZSxDbGluaWNhbCBJbmZvLEluc3VyYW5jZSBDb21wYW55LEFwcHIgQnksQ2xpbmljYWwgSW5mbyxUZXN0aW5nIExvY2F0aW9uCjEyMzQ1MSxLcmlzIENvcm5pc2gsOS80LzIwMjAsMTgxZCxDYXVjYXNpYW4sIkFudGxleSwgQVJOUCwgTW9uYSIsOTk5OSBTb21lIFN0cmVldCBSZCxUYWxsYWhhc3NlZSxGTCwzMjMwOCw5OTktOTk5LTk5OTksU0FSUy1Db1YtMiBSTkEgRGV0ZWN0ZWQsMy8zLzIwMjEsOTU5NDEtMSxTQVJTLUNvVi0yIFBDUiBSTkEsODQwNTMzMDA3LDU0NjMzNjEsMy8yLzIwMjEsTmFzYWwsQ2FwaXRhbCBIZWFsdGggUGxhbixTeXN0ZW0sIjEpIElzIHRoZSBQYXRpZW50IFN5bXRvbWF0aWM/CQlbUmVxdWlyZWRdCQl5ICAzLzEvMjEgCjIpIEhhcyB0aGUgcGF0aWVudCBiZWVuIGhvc3BpdGFsaXplZD8JCVtSZXF1aXJlZF0JCW4gCjMpIEhhcyB0aGUgcGF0aWVudCBiZWVuIGluIElDVT8JCVtSZXF1aXJlZF0JCW4gCjQpIElzIHRoZSBwYXRpZW50IHByZWduYW50PwkJW1JlcXVpcmVkXQkJbiAKNSkgSXMgdGhlIHBhdGllbnQgZW1wbG95ZWQgaW4gSGVhbHRoY2FyZT8JCVtSZXF1aXJlZF0JCW4gCjYpIElzIHRoaXMgdGhlIHBhdGllbnQncyBmaXJzdCB0ZXN0PwkJW1JlcXVpcmVkXQkJeSAKNykgUmVzaWRlbnQgb2YgYSBjb25ncmVnYXRlIGNhcmUgc2V0dGluZz8JCVtSZXF1aXJlZF0JCW4gCjgpIERhdGUgb2YgZmlyc3Qgc3ltcHRvbQkJW1JlcXVpcmVkXQkJX19fX19fX19fXyAKOSkgV2hhdCBpcyB0aGUgc291cmNlPwkJW1JlcXVpcmVkXQkJbiIsVFBDQSBMYWJvcmF0b3J5</inboundTemplate>
       <outboundTemplate encoding="base64">UGF0aWVudCBJRCxOYW1lLERPQixBZ2UsUmFjZSxQcm92aWRlcixBZGRyZXNzLENpdHksU3RhdGUsWmlwLFBob25lLFJlc3VsdCBEZXNjcixBcHByIERhdGUsTE9JTkMsTE9JTkMgVGVzdCBEZXNjcixTTk9NRUQgUnNsdCBDb2RlLFNhbXBsZSBJRCxEcmF3IERhdGUsU2FtcGxlIFR5cGUsMXN0IFRlc3Q/LEhDVz8sU3ltcHRvbWF0aWMsU3ltcHQgRGF0ZSxIb3NwPyxJQ1U/LE5zZyBIb21lPyxQcmVnPw==</outboundTemplate>
       <inboundDataType>DELIMITED</inboundDataType>
       <outboundDataType>DELIMITED</outboundDataType>
@@ -461,7 +506,7 @@ if (msg[&apos;row&apos;] &amp;&amp; msg[&apos;row&apos;][0] &amp;&amp; msg[&apos
   <destinationConnectors>
     <connector version="3.10.1">
       <metaDataId>2</metaDataId>
-      <name>Forward export to Prime Data Hub channel</name>
+      <name>Forward data to Prime Data Hub API</name>
       <properties class="com.mirth.connect.connectors.vm.VmDispatcherProperties" version="3.10.1">
         <pluginProperties/>
         <destinationConnectorProperties version="3.10.1">
@@ -612,7 +657,7 @@ if (msg[&apos;row&apos;] &amp;&amp; msg[&apos;row&apos;][0] &amp;&amp; msg[&apos
     </connector>
     <connector version="3.10.1">
       <metaDataId>3</metaDataId>
-      <name>Forward export to FDOH Export channel</name>
+      <name>Forward data to FDOH CSV File</name>
       <properties class="com.mirth.connect.connectors.vm.VmDispatcherProperties" version="3.10.1">
         <pluginProperties/>
         <destinationConnectorProperties version="3.10.1">
@@ -761,6 +806,157 @@ if (msg[&apos;row&apos;] &amp;&amp; msg[&apos;row&apos;][0] &amp;&amp; msg[&apos
       <enabled>true</enabled>
       <waitForPrevious>true</waitForPrevious>
     </connector>
+    <connector version="3.10.1">
+      <metaDataId>4</metaDataId>
+      <name>Forward data to FDOH SFTP</name>
+      <properties class="com.mirth.connect.connectors.vm.VmDispatcherProperties" version="3.10.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.10.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <channelId>de3a702a-7a6a-4047-a51e-f7006fd9b4e1</channelId>
+        <channelTemplate>${message.encodedData}</channelTemplate>
+        <mapVariables/>
+      </properties>
+      <transformer version="3.10.1">
+        <elements/>
+        <inboundDataType>DELIMITED</inboundDataType>
+        <outboundDataType>DELIMITED</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedDataTypeProperties" version="3.10.1">
+          <serializationProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedSerializationProperties" version="3.10.1">
+            <columnDelimiter>,</columnDelimiter>
+            <recordDelimiter>\n</recordDelimiter>
+            <quoteToken>&quot;</quoteToken>
+            <escapeWithDoubleQuote>true</escapeWithDoubleQuote>
+            <quoteEscapeToken>\</quoteEscapeToken>
+            <numberedRows>false</numberedRows>
+            <ignoreCR>true</ignoreCR>
+          </serializationProperties>
+          <deserializationProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedDeserializationProperties" version="3.10.1">
+            <columnDelimiter>,</columnDelimiter>
+            <recordDelimiter>\n</recordDelimiter>
+            <quoteToken>&quot;</quoteToken>
+            <escapeWithDoubleQuote>true</escapeWithDoubleQuote>
+            <quoteEscapeToken>\</quoteEscapeToken>
+          </deserializationProperties>
+          <batchProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedBatchProperties" version="3.10.1">
+            <splitType>Record</splitType>
+            <batchSkipRecords>0</batchSkipRecords>
+            <batchMessageDelimiter></batchMessageDelimiter>
+            <batchMessageDelimiterIncluded>false</batchMessageDelimiterIncluded>
+            <batchGroupingColumn></batchGroupingColumn>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedDataTypeProperties" version="3.10.1">
+          <serializationProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedSerializationProperties" version="3.10.1">
+            <columnDelimiter>,</columnDelimiter>
+            <recordDelimiter>\n</recordDelimiter>
+            <quoteToken>&quot;</quoteToken>
+            <escapeWithDoubleQuote>true</escapeWithDoubleQuote>
+            <quoteEscapeToken>\</quoteEscapeToken>
+            <numberedRows>false</numberedRows>
+            <ignoreCR>true</ignoreCR>
+          </serializationProperties>
+          <deserializationProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedDeserializationProperties" version="3.10.1">
+            <columnDelimiter>,</columnDelimiter>
+            <recordDelimiter>\n</recordDelimiter>
+            <quoteToken>&quot;</quoteToken>
+            <escapeWithDoubleQuote>true</escapeWithDoubleQuote>
+            <quoteEscapeToken>\</quoteEscapeToken>
+          </deserializationProperties>
+          <batchProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedBatchProperties" version="3.10.1">
+            <splitType>Record</splitType>
+            <batchSkipRecords>0</batchSkipRecords>
+            <batchMessageDelimiter></batchMessageDelimiter>
+            <batchMessageDelimiterIncluded>false</batchMessageDelimiterIncluded>
+            <batchGroupingColumn></batchGroupingColumn>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.10.1">
+        <elements/>
+        <inboundDataType>DELIMITED</inboundDataType>
+        <outboundDataType>DELIMITED</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedDataTypeProperties" version="3.10.1">
+          <serializationProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedSerializationProperties" version="3.10.1">
+            <columnDelimiter>,</columnDelimiter>
+            <recordDelimiter>\n</recordDelimiter>
+            <quoteToken>&quot;</quoteToken>
+            <escapeWithDoubleQuote>true</escapeWithDoubleQuote>
+            <quoteEscapeToken>\</quoteEscapeToken>
+            <numberedRows>false</numberedRows>
+            <ignoreCR>true</ignoreCR>
+          </serializationProperties>
+          <deserializationProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedDeserializationProperties" version="3.10.1">
+            <columnDelimiter>,</columnDelimiter>
+            <recordDelimiter>\n</recordDelimiter>
+            <quoteToken>&quot;</quoteToken>
+            <escapeWithDoubleQuote>true</escapeWithDoubleQuote>
+            <quoteEscapeToken>\</quoteEscapeToken>
+          </deserializationProperties>
+          <batchProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedBatchProperties" version="3.10.1">
+            <splitType>Record</splitType>
+            <batchSkipRecords>0</batchSkipRecords>
+            <batchMessageDelimiter></batchMessageDelimiter>
+            <batchMessageDelimiterIncluded>false</batchMessageDelimiterIncluded>
+            <batchGroupingColumn></batchGroupingColumn>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedDataTypeProperties" version="3.10.1">
+          <serializationProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedSerializationProperties" version="3.10.1">
+            <columnDelimiter>,</columnDelimiter>
+            <recordDelimiter>\n</recordDelimiter>
+            <quoteToken>&quot;</quoteToken>
+            <escapeWithDoubleQuote>true</escapeWithDoubleQuote>
+            <quoteEscapeToken>\</quoteEscapeToken>
+            <numberedRows>false</numberedRows>
+            <ignoreCR>true</ignoreCR>
+          </serializationProperties>
+          <deserializationProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedDeserializationProperties" version="3.10.1">
+            <columnDelimiter>,</columnDelimiter>
+            <recordDelimiter>\n</recordDelimiter>
+            <quoteToken>&quot;</quoteToken>
+            <escapeWithDoubleQuote>true</escapeWithDoubleQuote>
+            <quoteEscapeToken>\</quoteEscapeToken>
+          </deserializationProperties>
+          <batchProperties class="com.mirth.connect.plugins.datatypes.delimited.DelimitedBatchProperties" version="3.10.1">
+            <splitType>Record</splitType>
+            <batchSkipRecords>0</batchSkipRecords>
+            <batchMessageDelimiter></batchMessageDelimiter>
+            <batchMessageDelimiterIncluded>false</batchMessageDelimiterIncluded>
+            <batchGroupingColumn></batchGroupingColumn>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.10.1">
+        <elements/>
+      </filter>
+      <transportName>Channel Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>false</enabled>
+      <waitForPrevious>true</waitForPrevious>
+    </connector>
   </destinationConnectors>
   <preprocessingScript>// Modify the message variable below to pre process data
 
@@ -815,7 +1011,7 @@ return;</undeployScript>
     <metadata>
       <enabled>true</enabled>
       <lastModified>
-        <time>1615907850409</time>
+        <time>1616768379168</time>
         <timezone>America/New_York</timezone>
       </lastModified>
       <pruningSettings>
