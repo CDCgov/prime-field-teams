@@ -134,7 +134,16 @@ var RESULT_LOOKUP = [
                 // If we need a new sample ID based on the test then get a new ID
                 tmp['row'][outputRowIndex]['column17'] = resultMap[j][4] ? getNewSampleId() : commonSampleId;
                 tmp['row'][outputRowIndex]['column18'] = resultDate;
-                    tmp['row'][outputRowIndex]['column19'] = validate('Nasal', '', new Array());
+                tmp['row'][outputRowIndex]['column19'] = validate('Nasal', '', new Array());
+                //AOE questions
+                tmp['row'][outputRowIndex]['column20'] = '';
+                tmp['row'][outputRowIndex]['column21'] = '';
+                tmp['row'][outputRowIndex]['column22'] = '';
+                tmp['row'][outputRowIndex]['column23'] = '';
+                tmp['row'][outputRowIndex]['column24'] = '';
+                tmp['row'][outputRowIndex]['column25'] = '';
+                tmp['row'][outputRowIndex]['column26'] = '';
+                tmp['row'][outputRowIndex]['column27'] = '';
                 outputRowIndex++;
                     
             }
