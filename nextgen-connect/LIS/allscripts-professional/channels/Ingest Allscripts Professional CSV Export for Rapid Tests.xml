@@ -3,7 +3,7 @@
   <nextMetaDataId>6</nextMetaDataId>
   <name>Ingest Raw Allscripts Rapid Test CSV</name>
   <description></description>
-  <revision>8</revision>
+  <revision>22</revision>
   <sourceConnector version="3.10.1">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>
@@ -92,7 +92,7 @@ var RESULT_LOOKUP = [
 [&apos;INFLUENZA A&apos;, &apos;80382-5&apos;, &apos;FLUAV Ag Nph Ql IA.rapid&apos;, &apos;260415000&apos;, &apos;121006005&apos;, &apos;Influenza A Antigen Not Detected&apos;, &apos;Influenza A Antigen Detected&apos;, false],
 [&apos;INFLUENZA B&apos;, &apos;80383-3&apos;, &apos;FLUBV Ag Nph Ql IA.rapid&apos;, &apos;260415000&apos;, &apos;121008006&apos;, &apos;Influenza B Antigen Not Detected&apos;, &apos;Influenza B Antigen Detected&apos;, false],
 [&apos;Covid, Rapid, Office, single&apos;, &apos;95209-3&apos;, &apos;SARS-CoV+SARS-CoV-2 Ag Resp Ql IA.rapid&apos;, &apos;260385009&apos;, &apos;840535000&apos;, &apos;SARS-CoV-2 Antigen Not Detected&apos;, &apos;SARS-CoV-2 Antigen Detected&apos;, true],
-[&apos;Covid, Rapid, Office, combo&apos;, &apos;95209-3&apos;, &apos;SARS-CoV+SARS-CoV-2 Ag Resp Ql IA.rapid&apos;, &apos;260385009&apos;, &apos;840535000&apos;, &apos;SARS-CoV-2 Antigen Not Detected&apos;, &apos;SARS-CoV-2 Antigen Detected&apos;, false]
+[&apos;Covid, Rapid, Office, combo&apos;, &apos;95942-9&apos;, &apos;FLUAV Ag Nph Ql IA.rapid&apos;, &apos;260385009&apos;, &apos;840535000&apos;, &apos;SARS-CoV-2 Antigen Not Detected&apos;, &apos;SARS-CoV-2 Antigen Detected&apos;, false]
 ];
 
 
@@ -149,7 +149,8 @@ function getTestResultPairs(resultString) {
 }
 
 
-//Remove any extension from the phone number
+// Remove any extension from the phone number
+// Returns a phone number without any characters after an x
 function cleanPhoneNumber(phone) {
 	var cleanedPhone = &apos;&apos;;
 	if(phone) {
@@ -164,19 +165,37 @@ function cleanPhoneNumber(phone) {
 }
 
 // Generate a new sample ID
+// Returns a string using the date and a counter (e.g. 20210321-1)
 function getNewSampleId() {
 	return DateFormatter.format(Date.now()) + &apos;-&apos; + sampleIdCounter++;
+}
+
+// Determine if a given row is a duplicate of a previous row
+// Returns true if the row is a duplicate, false otherwise
+function isDuplicate(index) {
+	var isDuplicate = false;
+	var rowToTest = msg[&apos;row&apos;][index].toString();
+	// Only loop through rows up the the index specified
+	for (var row = 1; row &lt; index; row++) {
+		if(msg[&apos;row&apos;][row] &amp;&amp; msg[&apos;row&apos;][row].toString() === rowToTest) {
+			isDuplicate = true;
+			break;
+		}
+	}
+	return isDuplicate;
 }
 
 if(msg &amp;&amp; msg[&apos;row&apos;]) {
 	// Loop through all the rows in the input report, skipping the header row
 	for (var i = 1; i &lt; getArrayOrXmlLength(msg[&apos;row&apos;]); i++) {	
+		if(isDuplicate(i)) {
+			continue;
+		}
 		var resultString = validate(msg[&apos;row&apos;][i][&apos;column12&apos;].toString(), &apos;&apos;, new Array());
 		var commonSampleId = getNewSampleId();
 		var resultMap = getTestResultPairs(resultString);
 		var j;
 		for(j = 0; j &lt; resultMap.length; j ++) {
-
 			//Create a new output row
 			if (typeof(tmp) == &apos;xml&apos;) {
 				if (typeof(tmp[&apos;row&apos;][outputRowIndex]) == &apos;undefined&apos;) {
@@ -223,14 +242,14 @@ if(msg &amp;&amp; msg[&apos;row&apos;]) {
 			tmp[&apos;row&apos;][outputRowIndex][&apos;column18&apos;] = resultDate;
 	    		tmp[&apos;row&apos;][outputRowIndex][&apos;column19&apos;] = validate(&apos;Nasal&apos;, &apos;&apos;, new Array());
 	    		//AOE questions
-	    		tmp[&apos;row&apos;][outputRowIndex][&apos;column19&apos;] = &apos;&apos;;
 	    		tmp[&apos;row&apos;][outputRowIndex][&apos;column20&apos;] = &apos;&apos;;
-	    		tmp[&apos;row&apos;][outputRowIndex][&apos;column21&apos;] = &apos;&apos;;
-	    		tmp[&apos;row&apos;][outputRowIndex][&apos;column22&apos;] = &apos;&apos;;
-	    		tmp[&apos;row&apos;][outputRowIndex][&apos;column23&apos;] = &apos;&apos;;
-	    		tmp[&apos;row&apos;][outputRowIndex][&apos;column24&apos;] = &apos;&apos;;
-	    		tmp[&apos;row&apos;][outputRowIndex][&apos;column25&apos;] = &apos;&apos;;
-	    		tmp[&apos;row&apos;][outputRowIndex][&apos;column26&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column21&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column22&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column23&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column24&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column25&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column26&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column27&apos;] = &apos;&apos;;
 			outputRowIndex++;
 				
 		}
@@ -789,7 +808,7 @@ return;</undeployScript>
     <metadata>
       <enabled>true</enabled>
       <lastModified>
-        <time>1617134209224</time>
+        <time>1617717131663</time>
         <timezone>America/New_York</timezone>
       </lastModified>
       <pruningSettings>
