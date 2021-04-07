@@ -1,9 +1,9 @@
 <channel version="3.10.1">
-  <id>509940e1-8258-440d-8d30-ea71a4e7d632</id>
+  <id>c4f76ce2-dc9c-47f4-beb5-039cbde8f72c</id>
   <nextMetaDataId>6</nextMetaDataId>
-  <name>Ingest Raw Orchard CSV Data</name>
+  <name>Ingest Raw Allscripts Rapid Test CSV</name>
   <description></description>
-  <revision>35</revision>
+  <revision>22</revision>
   <sourceConnector version="3.10.1">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>
@@ -12,7 +12,7 @@
       <pollConnectorProperties version="3.10.1">
         <pollingType>INTERVAL</pollingType>
         <pollOnStart>true</pollOnStart>
-        <pollingFrequency>900000</pollingFrequency>
+        <pollingFrequency>60000</pollingFrequency>
         <pollingHour>0</pollingHour>
         <pollingMinute>0</pollingMinute>
         <cronJobs/>
@@ -51,8 +51,8 @@
         <queueBufferSize>1000</queueBufferSize>
       </sourceConnectorProperties>
       <scheme>FILE</scheme>
-      <host>$ORCHARD_REPORT_DIR</host>
-      <fileFilter>${ORCHARD_REPORT_FILENAME}</fileFilter>
+      <host>$ALLSCRIPTS_REPORT_DIR</host>
+      <fileFilter>$ALLSCRIPTS_REPORT_FILENAME</fileFilter>
       <regex>false</regex>
       <directoryRecursion>false</directoryRecursion>
       <ignoreDot>true</ignoreDot>
@@ -64,11 +64,11 @@
       <passive>true</passive>
       <validateConnection>true</validateConnection>
       <afterProcessingAction>MOVE</afterProcessingAction>
-      <moveToDirectory>$ORCHARD_REPORT_DIR/processed/${date.get(&apos;yyyyMM&apos;)}</moveToDirectory>
+      <moveToDirectory>$ALLSCRIPTS_REPORT_DIR/processed/${date.get(&apos;yyyyMM&apos;)}</moveToDirectory>
       <moveToFileName>${originalFilename}</moveToFileName>
       <errorReadingAction>MOVE</errorReadingAction>
       <errorResponseAction>AFTER_PROCESSING</errorResponseAction>
-      <errorMoveToDirectory>$ORCHARD_REPORT_DIR/error</errorMoveToDirectory>
+      <errorMoveToDirectory>$ALLSCRIPTS_REPORT_DIR/error</errorMoveToDirectory>
       <errorMoveToFileName>${originalFilename}</errorMoveToFileName>
       <checkFileAge>false</checkFileAge>
       <fileAge>1000</fileAge>
@@ -81,350 +81,183 @@
     </properties>
     <transformer version="3.10.1">
       <elements>
-        <com.mirth.connect.model.IteratorStep version="3.10.1">
-          <name>For each msg[&apos;row&apos;]</name>
+        <com.mirth.connect.plugins.javascriptstep.JavaScriptStep version="3.10.1">
+          <name>Generate report</name>
           <sequenceNumber>0</sequenceNumber>
           <enabled>true</enabled>
-          <properties>
-            <target>msg[&apos;row&apos;]</target>
-            <indexVariable>i</indexVariable>
-            <prefixSubstitutions>
-              <string>msg[&apos;row&apos;]</string>
-              <string>tmp[&apos;row&apos;]</string>
-            </prefixSubstitutions>
-            <children>
-              <com.mirth.connect.plugins.javascriptstep.JavaScriptStep version="3.10.1">
-                <name>Initiate new line</name>
-                <sequenceNumber>0-0</sequenceNumber>
-                <enabled>true</enabled>
-                <script>if (i === 0) {
-	i++;
-}</script>
-              </com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Patient ID</name>
-                <sequenceNumber>0-1</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column1&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column1&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Patient Name</name>
-                <sequenceNumber>0-2</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column2&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column2&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>DOB</name>
-                <sequenceNumber>0-3</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column3&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column3&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Age</name>
-                <sequenceNumber>0-4</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column4&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column4&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Race</name>
-                <sequenceNumber>0-5</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column5&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column5&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Provider</name>
-                <sequenceNumber>0-6</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column6&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column6&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Patient Address</name>
-                <sequenceNumber>0-7</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column7&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column7&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Patient City</name>
-                <sequenceNumber>0-8</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column8&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column8&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Patient State</name>
-                <sequenceNumber>0-9</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column9&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column9&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Patient Zipcode</name>
-                <sequenceNumber>0-10</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column10&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column10&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.javascriptstep.JavaScriptStep version="3.10.1">
-                <name>Patient Phone Number without extension</name>
-                <sequenceNumber>0-11</sequenceNumber>
-                <enabled>true</enabled>
-                <script>//Remove any extension from the phone number
- var phone = validate(msg[&apos;row&apos;][i][&apos;column11&apos;].toString(), &apos;&apos;, new Array());
- var cleanedPhone = &apos;&apos;;
- if(phone) {
- 	var extIndex = phone.toUpperCase().trim().indexOf(&apos;X&apos;);
- 	if(extIndex &gt; 0) {
- 		cleanedPhone = phone.trim().substr(0,extIndex);
- 	} else {
- 		cleanedPhone = phone;
- 	}
- }
+          <script>// Result lookup table
+// &lt;string to look for (case insensitive), LOINC code, LOINC description, negative SNOMED code, positive SNOMED code,
+// negative result description, positive result description, needs unique sample ID
+var RESULT_LOOKUP = [
+[&apos;INFLUENZA A&apos;, &apos;80382-5&apos;, &apos;FLUAV Ag Nph Ql IA.rapid&apos;, &apos;260415000&apos;, &apos;121006005&apos;, &apos;Influenza A Antigen Not Detected&apos;, &apos;Influenza A Antigen Detected&apos;, false],
+[&apos;INFLUENZA B&apos;, &apos;80383-3&apos;, &apos;FLUBV Ag Nph Ql IA.rapid&apos;, &apos;260415000&apos;, &apos;121008006&apos;, &apos;Influenza B Antigen Not Detected&apos;, &apos;Influenza B Antigen Detected&apos;, false],
+[&apos;Covid, Rapid, Office, single&apos;, &apos;95209-3&apos;, &apos;SARS-CoV+SARS-CoV-2 Ag Resp Ql IA.rapid&apos;, &apos;260385009&apos;, &apos;840535000&apos;, &apos;SARS-CoV-2 Antigen Not Detected&apos;, &apos;SARS-CoV-2 Antigen Detected&apos;, true],
+[&apos;Covid, Rapid, Office, combo&apos;, &apos;95942-9&apos;, &apos;FLUAV Ag Nph Ql IA.rapid&apos;, &apos;260385009&apos;, &apos;840535000&apos;, &apos;SARS-CoV-2 Antigen Not Detected&apos;, &apos;SARS-CoV-2 Antigen Detected&apos;, false]
+];
 
- tmp[&apos;row&apos;][i][&apos;column11&apos;] = cleanedPhone;</script>
-              </com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Result Description</name>
-                <sequenceNumber>0-12</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column12&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column12&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Appr Date</name>
-                <sequenceNumber>0-13</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column13&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column13&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>LOINC</name>
-                <sequenceNumber>0-14</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column14&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column14&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>LOINC Test description</name>
-                <sequenceNumber>0-15</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column15&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column15&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Result code</name>
-                <sequenceNumber>0-16</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column16&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column16&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Sample ID</name>
-                <sequenceNumber>0-17</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column17&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column17&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Draw Date</name>
-                <sequenceNumber>0-18</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column18&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column18&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Sample Type</name>
-                <sequenceNumber>0-19</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column19&apos;]</messageSegment>
-                <mapping>&apos;Nasal&apos;</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
-              <com.mirth.connect.plugins.javascriptstep.JavaScriptStep version="3.10.1">
-                <name>Decode Clinical Info</name>
-                <sequenceNumber>0-20</sequenceNumber>
-                <enabled>true</enabled>
-                <script>var clinicalInfo = validate(msg[&apos;row&apos;][i][&apos;column22&apos;].toString(), &apos;&apos;, new Array());
 
-// Change yes or no answer to a normalized value
-function normalizeYesNoAnswer(input) {
-	var retval = &apos;&apos;;
-	if(input.trim().startsWith(&apos;Y&apos;)) {
-		retval = &apos;Y&apos;;
-	} else if(input.trim().startsWith(&apos;N&apos;)) {
-		retval = &apos;N&apos;;
-	} 
-	return retval;
-}
 
-// Normalize any dates or empty if no date
-function normalizeDate(input) {
-	var retval = &apos;&apos;;
-	var fullDateFormatter = new Packages.java.text.SimpleDateFormat(&apos;M/d/y&apos;);
-	var shortDateFormatter = new Packages.java.text.SimpleDateFormat(&apos;M/d&apos;);
+// Sample ID counter
+var sampleIdCounter = 1;
 
-	// Try extracting the date
-	try {
-		// The SimpleDateFormat takes care of converting two digit years to four digit	
-		var date = fullDateFormatter.parse(input);
-		retval = fullDateFormatter.format(date); // Outputs as four digit year
-	} catch(ex) {
-		//Nothing to do
-	}
+// Row number of the output export incremented for each new row
+var outputRowIndex = 1;
 
-	// If there was no date decoded, try a different date format
-	if(!retval) {
-		var now = new Date();
-		try {
-			var date = shortDateFormatter.parse(input);
-			date.setYear(now.getYear());
-	
-			// Make sure we do not get a date in the future
-			if(date.getTime() &gt; now.getTime()) {
-				date.setYear(now.getYear() - 1);
-			}
-			retval = fullDateFormatter.format(date); // Outputs as four digit current year 
-		} catch(ex) {
-			//Nothing to do
-		}
-	} 
-	return retval;
-}
+// Data formatter
+var DateFormatter = new Packages.java.text.SimpleDateFormat(&apos;yyyyMMdd&apos;);
 
-var symtomatic = &apos;&apos;;
-var symtomaticDate = &apos;&apos;;
-var hospitalized = &apos;&apos;;
-var icu = &apos;&apos;;
-var pregnant = &apos;&apos;;
-var healthcareWorker = &apos;&apos;;
-var firstTest = &apos;&apos;;
-var careResident = &apos;&apos;;
+// Extract the tests and results.  The resulting in an array that contains arrays 
+// of LOINC, LOINC description, SNOMED code, result description and if  unique sample ID is needed (1 = true).
+function getTestResultPairs(resultString) {
+	// Indeces into the result lookup table
+	var LOOKUP_STR_INDEX = 0, LOINC_INDEX = 1, LOINC_DESC_INDEX = 2, SNOMED_NEG_INDEX = 3, SNOMED_POS_INDEX = 4, RES_DESC_NEG_INDEX = 5, RES_DESC_POS_INDEX = 6, UNIQUE_SAMPLE_INDEX = 7;
+	var retval = [];
+	if(resultString) {
+		var parts = resultString.toUpperCase().split(&apos;:&apos;);
+		var i;
+		for(i = 0; i &lt; parts.length - 1; i++) {
+			var loinc, loincDesc, snomed, resultDesc, isUniqueSample;	
+			var j;
 
-if(clinicalInfo) {	
-	// Split the string into questions.
-	var questionAndAnswers = clinicalInfo.toUpperCase().split(&apos;\\d\\)&apos;);
-
-	var x;
-	for(x = 1; x &lt; questionAndAnswers.length; x++) {
-		// Split the questions into question/answer 
-		var questionParts = questionAndAnswers[x].split(&apos;]&apos;);
-		if(questionParts.length === 2) {
-			var question = questionParts[0];
-			var answer = questionParts[1];
-			
-			// Find the specific question and extract the data.
-			if(question.includes(&apos;SYMTOMATIC&apos;)) {
-				// This answer can have a date or not, separated by some character like a comma, dash, etc. or not
-				var answerParts = answer.trim().split(&apos;[^A-Z0-9\\/]&apos;);
-				
-				//The first part is the Yes/No value
-				symtomatic = normalizeYesNoAnswer(answerParts[0]);
-				
-				// If there is another part then it is the date of first symptoms, but there may be other whitespaces at the end.
-				// Find the part that has a date if any
-				var dateString = &apos;&apos;;
-				var y;
-				for(y = answerParts.length - 1; y &gt; 0; y--) {
-					if(answerParts[y].indexOf(&quot;/&quot;) &gt;= 0) {
-						dateString = answerParts[y];
-						break;
+			// Find the test in the result lookup table
+			for(j = 0; j &lt; RESULT_LOOKUP.length; j++) {
+				if(parts[i].includes(RESULT_LOOKUP[j][LOOKUP_STR_INDEX].toUpperCase())) {
+					loinc = RESULT_LOOKUP[j][LOINC_INDEX];
+					loincDesc = RESULT_LOOKUP[j][LOINC_DESC_INDEX];
+					isUniqueSample = RESULT_LOOKUP[j][UNIQUE_SAMPLE_INDEX];
+					// Now get the result
+					if(parts[i + 1].includes(&apos;NEGATIVE&apos;)) {
+						snomed = RESULT_LOOKUP[j][SNOMED_NEG_INDEX];
+						resultDesc = RESULT_LOOKUP[j][RES_DESC_NEG_INDEX];
+					} else if(parts[i + 1].includes(&apos;POSITIVE&apos;)) {
+						snomed = RESULT_LOOKUP[j][SNOMED_POS_INDEX];
+						resultDesc = RESULT_LOOKUP[j][RES_DESC_POS_INDEX];
 					}
-				}
-				// Also, make sure we do not overwrite a date already provided in another question
-				if(dateString &amp;&amp; !symtomaticDate) {
-					symtomaticDate = normalizeDate(dateString);
+					break;
 				}
 			}
-			else if(question.includes(&apos;HOSPITALIZED&apos;)) {
-				hospitalized = normalizeYesNoAnswer(answer);
-			}
-			else if(question.includes(&apos;ICU&apos;)) {
-				icu = normalizeYesNoAnswer(answer);
-			}
-			else if(question.includes(&apos;PREGNANT&apos;)) {
-				pregnant = normalizeYesNoAnswer(answer);
-			}
-			else if(question.includes(&apos;EMPLOYED IN HEALTHCARE&apos;)) {
-				healthcareWorker = normalizeYesNoAnswer(answer);
-			}
-			else if(question.includes(&apos;FIRST TEST&apos;)) {
-				firstTest = normalizeYesNoAnswer(answer);
-			}
-			else if(question.includes(&apos;NURSING HOME&apos;)) {
-				careResident = normalizeYesNoAnswer(answer);
-			}
-			else if(question.includes(&apos;FIRST SYMPTOM&apos;)) {
-				var normalizedAnswer = normalizeDate(answer);
-				if(normalizedAnswer) {
-					symtomaticDate = normalizedAnswer;
-				}
+			
+			if(!loinc || !loincDesc || !snomed) {
+				logger.info(&apos;Unable to decode result in result string: &apos; + resultString);
+			} else {
+				retval.push([loinc, loincDesc, snomed, resultDesc, isUniqueSample]);
 			}
 		}
-    
-	}
-
-	// Only set a symptomatic date if symptomatic is Y
-	if(!symtomatic || symtomatic != &apos;Y&apos;) {
-		symtomaticDate = &apos;&apos;;
-	}
 	
-//	logger.info(&apos;1:&apos; + symtomatic + &apos; 2:&apos; + symtomaticDate + &apos; 3:&apos; + hospitalized + &apos; 4:&apos; + icu + &apos; 5:&apos; + pregnant + &apos; 6:&apos; + healthcareWorker + &apos; 7:&apos; + firstTest + &apos; 8:&apos; + careResident);
-	tmp[&apos;row&apos;][i][&apos;column20&apos;] = firstTest;
-	tmp[&apos;row&apos;][i][&apos;column21&apos;] = healthcareWorker;
-	tmp[&apos;row&apos;][i][&apos;column22&apos;] = symtomatic;
-	tmp[&apos;row&apos;][i][&apos;column23&apos;] = symtomaticDate;
-	tmp[&apos;row&apos;][i][&apos;column24&apos;] = hospitalized;
-	tmp[&apos;row&apos;][i][&apos;column25&apos;] = icu;
-	tmp[&apos;row&apos;][i][&apos;column26&apos;] = careResident;
-	tmp[&apos;row&apos;][i][&apos;column27&apos;] = pregnant;
+	}
+	return retval;
+}
+
+
+// Remove any extension from the phone number
+// Returns a phone number without any characters after an x
+function cleanPhoneNumber(phone) {
+	var cleanedPhone = &apos;&apos;;
+	if(phone) {
+		var extIndex = phone.toUpperCase().trim().indexOf(&apos;X&apos;);
+		if(extIndex &gt; 0) {
+			cleanedPhone = phone.trim().substr(0,extIndex);
+		} else {
+			cleanedPhone = phone;
+		}
+	}
+	return cleanedPhone;
+}
+
+// Generate a new sample ID
+// Returns a string using the date and a counter (e.g. 20210321-1)
+function getNewSampleId() {
+	return DateFormatter.format(Date.now()) + &apos;-&apos; + sampleIdCounter++;
+}
+
+// Determine if a given row is a duplicate of a previous row
+// Returns true if the row is a duplicate, false otherwise
+function isDuplicate(index) {
+	var isDuplicate = false;
+	var rowToTest = msg[&apos;row&apos;][index].toString();
+	// Only loop through rows up the the index specified
+	for (var row = 1; row &lt; index; row++) {
+		if(msg[&apos;row&apos;][row] &amp;&amp; msg[&apos;row&apos;][row].toString() === rowToTest) {
+			isDuplicate = true;
+			break;
+		}
+	}
+	return isDuplicate;
+}
+
+if(msg &amp;&amp; msg[&apos;row&apos;]) {
+	// Loop through all the rows in the input report, skipping the header row
+	for (var i = 1; i &lt; getArrayOrXmlLength(msg[&apos;row&apos;]); i++) {	
+		if(isDuplicate(i)) {
+			continue;
+		}
+		var resultString = validate(msg[&apos;row&apos;][i][&apos;column12&apos;].toString(), &apos;&apos;, new Array());
+		var commonSampleId = getNewSampleId();
+		var resultMap = getTestResultPairs(resultString);
+		var j;
+		for(j = 0; j &lt; resultMap.length; j ++) {
+			//Create a new output row
+			if (typeof(tmp) == &apos;xml&apos;) {
+				if (typeof(tmp[&apos;row&apos;][outputRowIndex]) == &apos;undefined&apos;) {
+				  createSegment(&apos;row&apos;, tmp, outputRowIndex);
+				}
+			} else {
+				if (typeof(tmp) == &apos;undefined&apos;) {
+				  tmp = {};
+				}
+				if (typeof(tmp[&apos;row&apos;]) == &apos;undefined&apos;) {
+				  tmp[&apos;row&apos;] = [];
+				}
+				if (typeof(tmp[&apos;row&apos;][outputRowIndex]) == &apos;undefined&apos;) {
+				  tmp[&apos;row&apos;][outputRowIndex] = {};
+				}
+			}	
+	
+	    		// Get only one date from result date
+	    		var resultDateString = validate(msg[&apos;row&apos;][i][&apos;column13&apos;].toString(), &apos;&apos;, new Array());
+			var resultDate = &apos;&apos;;
+	    		if (resultDateString) {	
+	    			resultDate = resultDateString.trim().split(&apos;\n&apos;)[0];
+	    		}
+	
+			// The order of these lines is important regardless of the column name.
+	    		tmp[&apos;row&apos;][outputRowIndex][&apos;column1&apos;] = validate(msg[&apos;row&apos;][i][&apos;column1&apos;].toString(), &apos;&apos;, new Array());
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column2&apos;] = validate(msg[&apos;row&apos;][i][&apos;column2&apos;].toString(), &apos;&apos;, new Array());
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column3&apos;] = validate(msg[&apos;row&apos;][i][&apos;column3&apos;].toString(), &apos;&apos;, new Array());
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column4&apos;] = validate(msg[&apos;row&apos;][i][&apos;column4&apos;].toString(), &apos;&apos;, new Array());
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column5&apos;] = validate(msg[&apos;row&apos;][i][&apos;column5&apos;].toString(), &apos;&apos;, new Array());
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column6&apos;] = validate(msg[&apos;row&apos;][i][&apos;column6&apos;].toString(), &apos;&apos;, new Array());
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column7&apos;] = validate(msg[&apos;row&apos;][i][&apos;column7&apos;].toString(), &apos;&apos;, new Array());
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column8&apos;] = validate(msg[&apos;row&apos;][i][&apos;column8&apos;].toString(), &apos;&apos;, new Array());
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column9&apos;] = validate(msg[&apos;row&apos;][i][&apos;column9&apos;].toString(), &apos;&apos;, new Array());
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column10&apos;] = validate(msg[&apos;row&apos;][i][&apos;column10&apos;].toString(), &apos;&apos;, new Array());
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column11&apos;] = cleanPhoneNumber(validate(msg[&apos;row&apos;][i][&apos;column11&apos;].toString(), &apos;&apos;, new Array()));
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column12&apos;] = resultMap[j][3]; //result desc
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column13&apos;] = resultDate;
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column14&apos;] = resultMap[j][0]; //loinc
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column15&apos;] = resultMap[j][1]; //loinc desc
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column16&apos;] = resultMap[j][2]; //snomed
+			// If we need a new sample ID based on the test then get a new ID
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column17&apos;] = resultMap[j][4] ? getNewSampleId() : commonSampleId;
+			tmp[&apos;row&apos;][outputRowIndex][&apos;column18&apos;] = resultDate;
+	    		tmp[&apos;row&apos;][outputRowIndex][&apos;column19&apos;] = validate(&apos;Nasal&apos;, &apos;&apos;, new Array());
+	    		//AOE questions
+	    		tmp[&apos;row&apos;][outputRowIndex][&apos;column20&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column21&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column22&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column23&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column24&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column25&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column26&apos;] = &apos;&apos;;
+               tmp[&apos;row&apos;][outputRowIndex][&apos;column27&apos;] = &apos;&apos;;
+			outputRowIndex++;
+				
+		}
+	}
 }</script>
-              </com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
-            </children>
-          </properties>
-        </com.mirth.connect.model.IteratorStep>
+        </com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
       </elements>
-      <inboundTemplate encoding="base64">UGF0aWVudCBJRCxQYXRpZW50IE5hbWUsRE9CLFBhdGllbnQgQWdlLFJhY2UsUHJvdmlkZXIsUGF0aWVudCBBZGRyZXNzMSxQYXRpZW50IENpdHksUGF0aWVudCBTdGF0ZSxQYXRpZW50IFpJUCxQYXRpZW50IFBob25lLFJlcG9ydGVkIEFzLEFwcHIgRGF0ZSxMT0lOQyxUZXN0LFJlc3VsdC1MZXZlbCBTTk9NRUQgQ29kZXMsU2FtcGxlIElELERyYXcgRGF0ZSxTYW1wbGUgVHlwZSxDbGluaWNhbCBJbmZvLEluc3VyYW5jZSBDb21wYW55LEFwcHIgQnksQ2xpbmljYWwgSW5mbyxUZXN0aW5nIExvY2F0aW9uCjEyMzQ1MSxLcmlzIENvcm5pc2gsOS80LzIwMjAsMTgxZCxDYXVjYXNpYW4sIkFudGxleSwgQVJOUCwgTW9uYSIsOTk5OSBTb21lIFN0cmVldCBSZCxUYWxsYWhhc3NlZSxGTCwzMjMwOCw5OTktOTk5LTk5OTksU0FSUy1Db1YtMiBSTkEgRGV0ZWN0ZWQsMy8zLzIwMjEsOTU5NDEtMSxTQVJTLUNvVi0yIFBDUiBSTkEsODQwNTMzMDA3LDU0NjMzNjEsMy8yLzIwMjEsTmFzYWwsQ2FwaXRhbCBIZWFsdGggUGxhbixTeXN0ZW0sIjEpIElzIHRoZSBQYXRpZW50IFN5bXRvbWF0aWM/CQlbUmVxdWlyZWRdCQl5ICAzLzEvMjEgCjIpIEhhcyB0aGUgcGF0aWVudCBiZWVuIGhvc3BpdGFsaXplZD8JCVtSZXF1aXJlZF0JCW4gCjMpIEhhcyB0aGUgcGF0aWVudCBiZWVuIGluIElDVT8JCVtSZXF1aXJlZF0JCW4gCjQpIElzIHRoZSBwYXRpZW50IHByZWduYW50PwkJW1JlcXVpcmVkXQkJbiAKNSkgSXMgdGhlIHBhdGllbnQgZW1wbG95ZWQgaW4gSGVhbHRoY2FyZT8JCVtSZXF1aXJlZF0JCW4gCjYpIElzIHRoaXMgdGhlIHBhdGllbnQncyBmaXJzdCB0ZXN0PwkJW1JlcXVpcmVkXQkJeSAKNykgUmVzaWRlbnQgb2YgYSBjb25ncmVnYXRlIGNhcmUgc2V0dGluZz8JCVtSZXF1aXJlZF0JCW4gCjgpIERhdGUgb2YgZmlyc3Qgc3ltcHRvbQkJW1JlcXVpcmVkXQkJX19fX19fX19fXyAKOSkgV2hhdCBpcyB0aGUgc291cmNlPwkJW1JlcXVpcmVkXQkJbiIsVFBDQSBMYWJvcmF0b3J5</inboundTemplate>
+      <inboundTemplate encoding="base64">SUQsTmFtZSxCaXJ0aCBEYXRlLEFnZSxSYWNlLFByZWZlcnJlZCBDYXJlZ2l2ZXIsU3RyZWV0LENpdHksU3RhdGUsWmlwLFBob25lLCJMYWIgUmVzdWx0IFZhbHVlIEVxdWFscywgRGF5cyAoTGFiIENhdGFsb2cpIixSZXN1bHQgRGF0ZQoxLEpveW4gRG93LDMvMTYvMTk4OCwzMyB5ZWFycyxXaGl0ZSwiQ29keSBWYW5MYW5kaW5naGFtLCBNRCIsOTk5IFN0cmVldCxUYWxsYWhhc3NlZSxGTCwzMjk5OSw5OTktOTk5OTk5OSwiQ292aWQsIFJhcGlkLCBPZmZpY2UsIHNpbmdsZTogTmVnYXRpdmUiLDMvMjIvMjAyMQ==</inboundTemplate>
       <outboundTemplate encoding="base64">UGF0aWVudCBJRCxOYW1lLERPQixBZ2UsUmFjZSxQcm92aWRlcixBZGRyZXNzLENpdHksU3RhdGUsWmlwLFBob25lLFJlc3VsdCBEZXNjcixBcHByIERhdGUsTE9JTkMsTE9JTkMgVGVzdCBEZXNjcixTTk9NRUQgUnNsdCBDb2RlLFNhbXBsZSBJRCxEcmF3IERhdGUsU2FtcGxlIFR5cGUsMXN0IFRlc3Q/LEhDVz8sU3ltcHRvbWF0aWMsU3ltcHQgRGF0ZSxIb3NwPyxJQ1U/LE5zZyBIb21lPyxQcmVnPw==</outboundTemplate>
       <inboundDataType>DELIMITED</inboundDataType>
       <outboundDataType>DELIMITED</outboundDataType>
@@ -489,10 +322,10 @@ if(clinicalInfo) {
           <enabled>true</enabled>
           <script>// If we have at least two rows in the file then process it, otherwise ignore the file
 if (msg[&apos;row&apos;] &amp;&amp; msg[&apos;row&apos;][0] &amp;&amp; msg[&apos;row&apos;][1]) {
-	logger.info(&apos;Processing Orchard Harvest file &apos; + sourceMap.get(&apos;originalFilename&apos;));
+	logger.info(&apos;Processing Allscripts file &apos; + sourceMap.get(&apos;originalFilename&apos;));
      return true;
 } else {
-	logger.info(&apos;Ignoring Orchard Harvest file with no data &apos; + sourceMap.get(&apos;originalFilename&apos;));
+	logger.info(&apos;Ignoring Allscripts file with no data &apos; + sourceMap.get(&apos;originalFilename&apos;));
 	return false;
 }</script>
         </com.mirth.connect.plugins.javascriptrule.JavaScriptRule>
@@ -652,7 +485,7 @@ if (msg[&apos;row&apos;] &amp;&amp; msg[&apos;row&apos;][0] &amp;&amp; msg[&apos
       </filter>
       <transportName>Channel Writer</transportName>
       <mode>DESTINATION</mode>
-      <enabled>true</enabled>
+      <enabled>false</enabled>
       <waitForPrevious>false</waitForPrevious>
     </connector>
     <connector version="3.10.1">
@@ -803,7 +636,7 @@ if (msg[&apos;row&apos;] &amp;&amp; msg[&apos;row&apos;][0] &amp;&amp; msg[&apos
       </filter>
       <transportName>Channel Writer</transportName>
       <mode>DESTINATION</mode>
-      <enabled>true</enabled>
+      <enabled>false</enabled>
       <waitForPrevious>true</waitForPrevious>
     </connector>
     <connector version="3.10.1">
@@ -832,8 +665,8 @@ if (msg[&apos;row&apos;] &amp;&amp; msg[&apos;row&apos;][0] &amp;&amp; msg[&apos
           <reattachAttachments>true</reattachAttachments>
         </destinationConnectorProperties>
         <scheme>FILE</scheme>
-        <host>$ORCHARD_REPORT_DIR/PCR-ready-to-upload</host>
-        <outputPattern>TPCA_PCR_${date.get(&apos;MMddyy&apos;)}_${SYSTIME}.csv</outputPattern>
+        <host>$ORCHARD_REPORT_DIR/RAPID-generated-reports</host>
+        <outputPattern>TPCA_RAPID_${date.get(&apos;MMddyy&apos;)}_${SYSTIME}.csv</outputPattern>
         <anonymous>true</anonymous>
         <username>anonymous</username>
         <password>anonymous</password>
@@ -924,9 +757,9 @@ if (msg[&apos;row&apos;] &amp;&amp; msg[&apos;row&apos;][0] &amp;&amp; msg[&apos
   <preprocessingScript>// Modify the message variable below to pre process data
 
 // Create the necessary folders
-(new Packages.java.io.File(configurationMap.get(&apos;ORCHARD_REPORT_DIR&apos;) + &apos;/error&apos;)).mkdirs();
-(new Packages.java.io.File(configurationMap.get(&apos;ORCHARD_REPORT_DIR&apos;) + &apos;/processed&apos;)).mkdirs();
-(new Packages.java.io.File(configurationMap.get(&apos;ORCHARD_REPORT_DIR&apos;) + &apos;/PCR-ready-to-upload&apos;)).mkdirs();
+(new Packages.java.io.File(configurationMap.get(&apos;ALLSCRIPTS_REPORT_DIR&apos;) + &apos;/error&apos;)).mkdirs();
+(new Packages.java.io.File(configurationMap.get(&apos;ALLSCRIPTS_REPORT_DIR&apos;) + &apos;/processed&apos;)).mkdirs();
+(new Packages.java.io.File(configurationMap.get(&apos;ALLSCRIPTS_REPORT_DIR&apos;) + &apos;/RAPID-generated-reports&apos;)).mkdirs();
 
 return message;</preprocessingScript>
   <postprocessingScript>// This script executes once after a message has been processed
@@ -975,7 +808,7 @@ return;</undeployScript>
     <metadata>
       <enabled>true</enabled>
       <lastModified>
-        <time>1617127110611</time>
+        <time>1617717131663</time>
         <timezone>America/New_York</timezone>
       </lastModified>
       <pruningSettings>
