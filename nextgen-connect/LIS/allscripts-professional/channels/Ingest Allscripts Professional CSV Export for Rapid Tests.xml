@@ -3,7 +3,7 @@
   <nextMetaDataId>6</nextMetaDataId>
   <name>Ingest Raw Allscripts Rapid Test CSV</name>
   <description></description>
-  <revision>22</revision>
+  <revision>24</revision>
   <sourceConnector version="3.10.1">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>
@@ -89,10 +89,10 @@
 // &lt;string to look for (case insensitive), LOINC code, LOINC description, negative SNOMED code, positive SNOMED code,
 // negative result description, positive result description, needs unique sample ID
 var RESULT_LOOKUP = [
-[&apos;INFLUENZA A&apos;, &apos;80382-5&apos;, &apos;FLUAV Ag Nph Ql IA.rapid&apos;, &apos;260415000&apos;, &apos;121006005&apos;, &apos;Influenza A Antigen Not Detected&apos;, &apos;Influenza A Antigen Detected&apos;, false],
-[&apos;INFLUENZA B&apos;, &apos;80383-3&apos;, &apos;FLUBV Ag Nph Ql IA.rapid&apos;, &apos;260415000&apos;, &apos;121008006&apos;, &apos;Influenza B Antigen Not Detected&apos;, &apos;Influenza B Antigen Detected&apos;, false],
-[&apos;Covid, Rapid, Office, single&apos;, &apos;95209-3&apos;, &apos;SARS-CoV+SARS-CoV-2 Ag Resp Ql IA.rapid&apos;, &apos;260385009&apos;, &apos;840535000&apos;, &apos;SARS-CoV-2 Antigen Not Detected&apos;, &apos;SARS-CoV-2 Antigen Detected&apos;, true],
-[&apos;Covid, Rapid, Office, combo&apos;, &apos;95942-9&apos;, &apos;FLUAV Ag Nph Ql IA.rapid&apos;, &apos;260385009&apos;, &apos;840535000&apos;, &apos;SARS-CoV-2 Antigen Not Detected&apos;, &apos;SARS-CoV-2 Antigen Detected&apos;, false]
+[&apos;INFLUENZA A&apos;, &apos;80382-5&apos;, &apos;FLUAV Ag Nph Ql IA.rapid&apos;, &apos;260415000&apos;, &apos;121006005&apos;, &apos;Not Detected&apos;, &apos;Influenza A Ag detected&apos;, false],
+[&apos;INFLUENZA B&apos;, &apos;80383-3&apos;, &apos;FLUBV Ag Nph Ql IA.rapid&apos;, &apos;260415000&apos;, &apos;121008006&apos;, &apos;Not Detected&apos;, &apos;Influenza B Ag detected&apos;, false],
+[&apos;Covid, Rapid, Office, single&apos;, &apos;95209-3&apos;, &apos;SARS-CoV+SARS-CoV-2 Ag Resp Ql IA.rapid&apos;, &apos;260415000&apos;, &apos;840535000&apos;, &apos;Not Detected&apos;, &apos;SC or SC2 Ag detected&apos;, true],
+[&apos;Covid, Rapid, Office, combo&apos;, &apos;95942-9&apos;, &apos;FLUABV+SARS-CoV Ag Pnl Up resp IA.rapid&apos;, &apos;260415000&apos;, &apos;840535000&apos;, &apos;Not Detected&apos;, &apos;SC or SC2 Ag detected&apos;, false]
 ];
 
 
@@ -808,7 +808,7 @@ return;</undeployScript>
     <metadata>
       <enabled>true</enabled>
       <lastModified>
-        <time>1617717131663</time>
+        <time>1618332165312</time>
         <timezone>America/New_York</timezone>
       </lastModified>
       <pruningSettings>
