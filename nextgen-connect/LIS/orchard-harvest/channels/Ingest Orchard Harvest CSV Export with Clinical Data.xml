@@ -3,7 +3,7 @@
   <nextMetaDataId>6</nextMetaDataId>
   <name>Ingest Raw Orchard CSV Data</name>
   <description></description>
-  <revision>39</revision>
+  <revision>40</revision>
   <sourceConnector version="3.10.1">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>
@@ -209,18 +209,9 @@
 
  tmp[&apos;row&apos;][i][&apos;column11&apos;] = cleanedPhone;</script>
               </com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
-              <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
-                <name>Appr Date</name>
-                <sequenceNumber>0-12</sequenceNumber>
-                <enabled>true</enabled>
-                <messageSegment>tmp[&apos;row&apos;][i][&apos;column13&apos;]</messageSegment>
-                <mapping>msg[&apos;row&apos;][i][&apos;column13&apos;].toString()</mapping>
-                <defaultValue></defaultValue>
-                <replacements/>
-              </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
               <com.mirth.connect.plugins.javascriptstep.JavaScriptStep version="3.10.1">
                 <name>LOINC SNOMED code and desc</name>
-                <sequenceNumber>0-13</sequenceNumber>
+                <sequenceNumber>0-12</sequenceNumber>
                 <enabled>true</enabled>
                 <script>var loinc = validate(msg[&apos;row&apos;][i][&apos;column14&apos;].toString(), &apos;&apos;, new Array());
 var loincDesc = validate(msg[&apos;row&apos;][i][&apos;column15&apos;].toString(), &apos;&apos;, new Array());
@@ -244,14 +235,17 @@ if(loinc == &apos;95941-1&apos;) {
 		snomedDesc = &apos;Not Detected&apos;;
 	}
 }
+
+// This needs to be in order as the column name does not set the output order
+tmp[&apos;row&apos;][i][&apos;column12&apos;] = snomedDesc;
+tmp[&apos;row&apos;][i][&apos;column13&apos;] = validate(msg[&apos;row&apos;][i][&apos;column13&apos;].toString(), &apos;&apos;, new Array()); // Appr Date
 tmp[&apos;row&apos;][i][&apos;column14&apos;] = loinc;
 tmp[&apos;row&apos;][i][&apos;column15&apos;] = loincDesc;
-tmp[&apos;row&apos;][i][&apos;column16&apos;] = snomed;
-tmp[&apos;row&apos;][i][&apos;column12&apos;] = snomedDesc;</script>
+tmp[&apos;row&apos;][i][&apos;column16&apos;] = snomed;</script>
               </com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
               <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
                 <name>Sample ID</name>
-                <sequenceNumber>0-14</sequenceNumber>
+                <sequenceNumber>0-13</sequenceNumber>
                 <enabled>true</enabled>
                 <messageSegment>tmp[&apos;row&apos;][i][&apos;column17&apos;]</messageSegment>
                 <mapping>msg[&apos;row&apos;][i][&apos;column17&apos;].toString()</mapping>
@@ -260,7 +254,7 @@ tmp[&apos;row&apos;][i][&apos;column12&apos;] = snomedDesc;</script>
               </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
               <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
                 <name>Draw Date</name>
-                <sequenceNumber>0-15</sequenceNumber>
+                <sequenceNumber>0-14</sequenceNumber>
                 <enabled>true</enabled>
                 <messageSegment>tmp[&apos;row&apos;][i][&apos;column18&apos;]</messageSegment>
                 <mapping>msg[&apos;row&apos;][i][&apos;column18&apos;].toString()</mapping>
@@ -269,7 +263,7 @@ tmp[&apos;row&apos;][i][&apos;column12&apos;] = snomedDesc;</script>
               </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
               <com.mirth.connect.plugins.messagebuilder.MessageBuilderStep version="3.10.1">
                 <name>Sample Type</name>
-                <sequenceNumber>0-16</sequenceNumber>
+                <sequenceNumber>0-15</sequenceNumber>
                 <enabled>true</enabled>
                 <messageSegment>tmp[&apos;row&apos;][i][&apos;column19&apos;]</messageSegment>
                 <mapping>&apos;Nasal&apos;</mapping>
@@ -278,7 +272,7 @@ tmp[&apos;row&apos;][i][&apos;column12&apos;] = snomedDesc;</script>
               </com.mirth.connect.plugins.messagebuilder.MessageBuilderStep>
               <com.mirth.connect.plugins.javascriptstep.JavaScriptStep version="3.10.1">
                 <name>Decode Clinical Info</name>
-                <sequenceNumber>0-17</sequenceNumber>
+                <sequenceNumber>0-16</sequenceNumber>
                 <enabled>true</enabled>
                 <script>var clinicalInfo = validate(msg[&apos;row&apos;][i][&apos;column22&apos;].toString(), &apos;&apos;, new Array());
 
@@ -970,7 +964,7 @@ return;</undeployScript>
     <metadata>
       <enabled>true</enabled>
       <lastModified>
-        <time>1618334332708</time>
+        <time>1618416037430</time>
         <timezone>America/New_York</timezone>
       </lastModified>
       <pruningSettings>

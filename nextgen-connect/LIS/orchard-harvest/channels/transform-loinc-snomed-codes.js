@@ -20,7 +20,10 @@ if(loinc == '95941-1') {
 		snomedDesc = 'Not Detected';
 	}
 }
+
+// This needs to be in order as the column name does not set the output order
+tmp['row'][i]['column12'] = snomedDesc;
+tmp['row'][i]['column13'] = validate(msg['row'][i]['column13'].toString(), '', new Array()); // Appr Date
 tmp['row'][i]['column14'] = loinc;
 tmp['row'][i]['column15'] = loincDesc;
 tmp['row'][i]['column16'] = snomed;
-tmp['row'][i]['column12'] = snomedDesc;
