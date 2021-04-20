@@ -3,7 +3,7 @@
   <nextMetaDataId>6</nextMetaDataId>
   <name>Ingest Raw Orchard CSV Data</name>
   <description></description>
-  <revision>40</revision>
+  <revision>41</revision>
   <sourceConnector version="3.10.1">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>
@@ -222,17 +222,19 @@ var snomedDesc = validate(msg[&apos;row&apos;][i][&apos;column12&apos;].toString
 if(loinc == &apos;95941-1&apos;) {
 	loincDesc = &apos;FLUABV+SARS-CoV-2+RSV Pnl Resp NAA+probe&apos;;
 	//Update the SNOMED codes as needed
-	
+
+	// Change the SNOMED description per FLDOH requirements
 	// Positive result
 	if(snomed == &apos;840533007&apos;) {
-		// Change the SNOMED description per FLDOH requirements
 		snomedDesc = &apos;SC2 RNA detected&apos;;
 	} 
 	// Negative result
 	else if(snomed == &apos;260385009&apos;) {
-		// Change the SNOMED Code per FLDOH requirements
-		snomed = &apos;260415000&apos;;
-		snomedDesc = &apos;Not Detected&apos;;
+		snomedDesc = &apos;Negative&apos;;
+	}
+	// Not detected result
+	else if(snomed == &apos;260415000&apos;) {
+		snomedDesc = &apos;Not detected&apos;;
 	}
 }
 
@@ -964,7 +966,7 @@ return;</undeployScript>
     <metadata>
       <enabled>true</enabled>
       <lastModified>
-        <time>1618416037430</time>
+        <time>1618424078391</time>
         <timezone>America/New_York</timezone>
       </lastModified>
       <pruningSettings>

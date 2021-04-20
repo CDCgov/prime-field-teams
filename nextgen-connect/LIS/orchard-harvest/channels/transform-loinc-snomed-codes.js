@@ -7,17 +7,19 @@ var snomedDesc = validate(msg['row'][i]['column12'].toString(), '', new Array())
 if(loinc == '95941-1') {
 	loincDesc = 'FLUABV+SARS-CoV-2+RSV Pnl Resp NAA+probe';
 	//Update the SNOMED codes as needed
-	
+
+	// Change the SNOMED description per FLDOH requirements
 	// Positive result
 	if(snomed == '840533007') {
-		// Change the SNOMED description per FLDOH requirements
 		snomedDesc = 'SC2 RNA detected';
 	} 
 	// Negative result
 	else if(snomed == '260385009') {
-		// Change the SNOMED Code per FLDOH requirements
-		snomed = '260415000';
-		snomedDesc = 'Not Detected';
+		snomedDesc = 'Negative';
+	}
+	// Not detected result
+	else if(snomed == '260415000') {
+		snomedDesc = 'Not detected';
 	}
 }
 
