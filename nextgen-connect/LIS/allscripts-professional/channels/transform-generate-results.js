@@ -1,11 +1,12 @@
 // Result lookup table
 // <string to look for (case insensitive), LOINC code, LOINC description, negative SNOMED code, positive SNOMED code,
 // negative result description, positive result description, needs unique sample ID
+// SNOMED codes and descriptions are as required for FLDOH
 var RESULT_LOOKUP = [
-    ['INFLUENZA A', '80382-5', 'FLUAV Ag Nph Ql IA.rapid', '260415000', '121006005', 'Influenza A Antigen Not Detected', 'Influenza A Antigen Detected', false],
-    ['INFLUENZA B', '80383-3', 'FLUBV Ag Nph Ql IA.rapid', '260415000', '121008006', 'Influenza B Antigen Not Detected', 'Influenza B Antigen Detected', false],
-    ['Covid, Rapid, Office, single', '95209-3', 'SARS-CoV+SARS-CoV-2 Ag Resp Ql IA.rapid', '260385009', '840535000', 'SARS-CoV-2 Antigen Not Detected', 'SARS-CoV-2 Antigen Detected', true],
-    ['Covid, Rapid, Office, combo', '95209-3', 'SARS-CoV+SARS-CoV-2 Ag Resp Ql IA.rapid', '260385009', '840535000', 'SARS-CoV-2 Antigen Not Detected', 'SARS-CoV-2 Antigen Detected', false]
+    ['INFLUENZA A', '80382-5', 'FLUAV Ag Nph Ql IA.rapid', '260415000', '121006005', 'Not Detected', 'Influenza A Ag detected', false],
+    ['INFLUENZA B', '80383-3', 'FLUBV Ag Nph Ql IA.rapid', '260415000', '121008006', 'Not Detected', 'Influenza B Ag detected', false],
+    ['Covid, Rapid, Office, single', '95209-3', 'SARS-CoV+SARS-CoV-2 Ag Resp Ql IA.rapid', '260415000', '840535000', 'Not Detected', 'SC or SC2 Ag detected', true],
+    ['Covid, Rapid, Office, combo', '95942-9', 'FLUABV+SARS-CoV Ag Pnl Up resp IA.rapid', '260415000', '840535000', 'Not Detected', 'SC or SC2 Ag detected', false]
     ];
     
     
@@ -62,7 +63,8 @@ var RESULT_LOOKUP = [
     }
     
     
-    //Remove any extension from the phone number
+    // Remove any extension from the phone number
+    // Returns a phone number without any characters after an x
     function cleanPhoneNumber(phone) {
         var cleanedPhone = '';
         if(phone) {
@@ -77,19 +79,37 @@ var RESULT_LOOKUP = [
     }
     
     // Generate a new sample ID
+    // Returns a string using the date and a counter (e.g. 20210321-1)
     function getNewSampleId() {
         return DateFormatter.format(Date.now()) + '-' + sampleIdCounter++;
+    }
+    
+    // Determine if a given row is a duplicate of a previous row
+    // Returns true if the row is a duplicate, false otherwise
+    function isDuplicate(index) {
+        var isDuplicate = false;
+        var rowToTest = msg['row'][index].toString();
+        // Only loop through rows up the the index specified
+        for (var row = 1; row < index; row++) {
+            if(msg['row'][row] && msg['row'][row].toString() === rowToTest) {
+                isDuplicate = true;
+                break;
+            }
+        }
+        return isDuplicate;
     }
     
     if(msg && msg['row']) {
         // Loop through all the rows in the input report, skipping the header row
         for (var i = 1; i < getArrayOrXmlLength(msg['row']); i++) {	
+            if(isDuplicate(i)) {
+                continue;
+            }
             var resultString = validate(msg['row'][i]['column12'].toString(), '', new Array());
             var commonSampleId = getNewSampleId();
             var resultMap = getTestResultPairs(resultString);
             var j;
             for(j = 0; j < resultMap.length; j ++) {
-    
                 //Create a new output row
                 if (typeof(tmp) == 'xml') {
                     if (typeof(tmp['row'][outputRowIndex]) == 'undefined') {
