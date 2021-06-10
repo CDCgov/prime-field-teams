@@ -1,0 +1,37 @@
+<alertModel version="3.10.1">
+  <id>7db8cc66-30e4-426b-b43c-19d616ae2496</id>
+  <name>SFTP Error Alert</name>
+  <enabled>true</enabled>
+  <trigger class="defaultTrigger" version="3.10.1">
+    <alertChannels version="3.10.1">
+      <newChannelSource>false</newChannelSource>
+      <newChannelDestination>false</newChannelDestination>
+      <enabledChannels>
+        <string>de3a702a-7a6a-4047-a51e-f7006fd9b4e1</string>
+      </enabledChannels>
+      <disabledChannels/>
+      <partialChannels/>
+    </alertChannels>
+    <errorEventTypes>
+      <errorEventType>USER_DEFINED_TRANSFORMER</errorEventType>
+    </errorEventTypes>
+    <regex></regex>
+  </trigger>
+  <actionGroups>
+    <alertActionGroup version="3.10.1">
+      <actions>
+        <alertAction version="3.10.1">
+          <protocol>Email</protocol>
+          <recipient>$ALERT_TO_EMAIL</recipient>
+        </alertAction>
+      </actions>
+      <subject>Mirth Error sending your data on ${date}</subject>
+      <template>Mirth Connect encountered an error trying to send your report.  The technical details of the error are below.  
+
+Channel: ${channelName}
+Connector: ${connectorName}
+${error}</template>
+    </alertActionGroup>
+  </actionGroups>
+  <properties/>
+</alertModel>

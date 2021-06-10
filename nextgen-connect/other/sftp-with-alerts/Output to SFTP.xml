@@ -1,0 +1,232 @@
+<channel version="3.10.1">
+  <id>de3a702a-7a6a-4047-a51e-f7006fd9b4e1</id>
+  <nextMetaDataId>4</nextMetaDataId>
+  <name>Output to FLDOH SFTP</name>
+  <description></description>
+  <revision>25</revision>
+  <sourceConnector version="3.10.1">
+    <metaDataId>0</metaDataId>
+    <name>sourceConnector</name>
+    <properties class="com.mirth.connect.connectors.vm.VmReceiverProperties" version="3.10.1">
+      <pluginProperties/>
+      <sourceConnectorProperties version="3.10.1">
+        <responseVariable>None</responseVariable>
+        <respondAfterProcessing>true</respondAfterProcessing>
+        <processBatch>false</processBatch>
+        <firstResponse>false</firstResponse>
+        <processingThreads>1</processingThreads>
+        <resourceIds class="linked-hash-map">
+          <entry>
+            <string>Default Resource</string>
+            <string>[Default Resource]</string>
+          </entry>
+        </resourceIds>
+        <queueBufferSize>1000</queueBufferSize>
+      </sourceConnectorProperties>
+    </properties>
+    <transformer version="3.10.1">
+      <elements/>
+      <inboundTemplate encoding="base64"></inboundTemplate>
+      <outboundTemplate encoding="base64"></outboundTemplate>
+      <inboundDataType>RAW</inboundDataType>
+      <outboundDataType>RAW</outboundDataType>
+      <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.10.1">
+        <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.10.1">
+          <splitType>JavaScript</splitType>
+          <batchScript></batchScript>
+        </batchProperties>
+      </inboundProperties>
+      <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.10.1">
+        <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.10.1">
+          <splitType>JavaScript</splitType>
+          <batchScript></batchScript>
+        </batchProperties>
+      </outboundProperties>
+    </transformer>
+    <filter version="3.10.1">
+      <elements/>
+    </filter>
+    <transportName>Channel Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <waitForPrevious>true</waitForPrevious>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector version="3.10.1">
+      <metaDataId>1</metaDataId>
+      <name>FLDOH send export to SFTP </name>
+      <properties class="com.mirth.connect.connectors.file.FileDispatcherProperties" version="3.10.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.10.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>3</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <scheme>SFTP</scheme>
+        <schemeProperties class="com.mirth.connect.connectors.file.SftpSchemeProperties">
+          <passwordAuth>true</passwordAuth>
+          <keyAuth>false</keyAuth>
+          <keyFile></keyFile>
+          <passPhrase></passPhrase>
+          <hostKeyChecking>ask</hostKeyChecking>
+          <knownHostsFile></knownHostsFile>
+          <configurationSettings class="linked-hash-map"/>
+        </schemeProperties>
+        <host>$FLDOH_SFTP_HOST/$FLDOH_SFTP_DIR</host>
+        <outputPattern>${FLDOH_REPORT_FILENAME_PREFIX}_${date.get(&apos;MMddyy&apos;)}_${SYSTIME}.csv</outputPattern>
+        <anonymous>false</anonymous>
+        <username>foo</username>
+        <password>pass</password>
+        <timeout>10000</timeout>
+        <keepConnectionOpen>false</keepConnectionOpen>
+        <maxIdleTime>0</maxIdleTime>
+        <secure>true</secure>
+        <passive>true</passive>
+        <validateConnection>true</validateConnection>
+        <outputAppend>false</outputAppend>
+        <errorOnExists>false</errorOnExists>
+        <temporary>false</temporary>
+        <binary>false</binary>
+        <charsetEncoding>DEFAULT_ENCODING</charsetEncoding>
+        <template>${message.rawData}</template>
+      </properties>
+      <transformer version="3.10.1">
+        <elements/>
+        <inboundTemplate encoding="base64">UGF0aWVudCBJRCxQYXRpZW50IE5hbWUsRE9CLFBhdGllbnQgQWdlLFJhY2UsUHJvdmlkZXIsUGF0aWVudCBBZGRyZXNzMSxQYXRpZW50IENpdHksUGF0aWVudCBTdGF0ZSxQYXRpZW50IFpJUCxQYXRpZW50IFBob25lLFJlcG9ydGVkIEFzLEFwcHIgRGF0ZSxMT0lOQyxUZXN0LFJlc3VsdC1MZXZlbCBTTk9NRUQgQ29kZXMsU2FtcGxlIElELERyYXcgRGF0ZSxTYW1wbGUgVHlwZSxDbGluaWNhbCBJbmZvCjk5OSxKb2huIERPZSw5LzQvMjAyMCwxODFkLENhdWNhc2lhbiwiQW50bGV5LCBBUk5QLCBNb25hIiwsVGFsbGFoYXNzZWUsRkwsMzIzMDgsLFNBUlMtQ29WLTIgUk5BIERldGVjdGVkLDMvMy8yMDIxLDk1OTQxLTEsU0FSUy1Db1YtMiBQQ1IgUk5BLDg0MDUzMzAwNyw1NDYzMzYxLDMvMi8yMDIxLE5hc2FsLCIxKSBJcyB0aGUgUGF0aWVudCBTeW10b21hdGljPwkJW1JlcXVpcmVkXQkJeSAgMy8xLzIxIAoyKSBIYXMgdGhlIHBhdGllbnQgYmVlbiBob3NwaXRhbGl6ZWQ/CQlbUmVxdWlyZWRdCQluIAozKSBIYXMgdGhlIHBhdGllbnQgYmVlbiBpbiBJQ1U/CQlbUmVxdWlyZWRdCQluIAo0KSBJcyB0aGUgcGF0aWVudCBwcmVnbmFudD8JCVtSZXF1aXJlZF0JCW4gCjUpIElzIHRoZSBwYXRpZW50IGVtcGxveWVkIGluIEhlYWx0aGNhcmU/CQlbUmVxdWlyZWRdCQluIAo2KSBJcyB0aGlzIHRoZSBwYXRpZW50J3MgZmlyc3QgdGVzdD8JCVtSZXF1aXJlZF0JCXkgCjcpIFJlc2lkZW50IG9mIGEgY29uZ3JlZ2F0ZSBjYXJlIHNldHRpbmc/CQlbUmVxdWlyZWRdCQluIAo4KSBEYXRlIG9mIGZpcnN0IHN5bXB0b20JCVtSZXF1aXJlZF0JCV9fX19fX19fX18gCjkpIFdoYXQgaXMgdGhlIHNvdXJjZT8JCVtSZXF1aXJlZF0JCW4iCjk5OSxKb2huIERPZSw2LzUvMjAxNywzLENhdWNhc2lhbiwiQW50bGV5LCBBUk5QLCBNb25hIiwsVEFMTEFIQVNTRUUsRkwsMzIzMTIsLFNBUlMtQ29WLTIgUk5BIE5vdCBEZXRlY3RlZCwzLzMvMjAyMSw5NTk0MS0xLFNBUlMtQ29WLTIgUENSIFJOQSwyNjAzODUwMDksNTQ2MzY0OSwzLzMvMjAyMSxOYXNhbCwiMSkgSXMgdGhlIFBhdGllbnQgU3ltdG9tYXRpYz8JCVtSZXF1aXJlZF0JCXkgIDMvMS8yMSAKMikgSGFzIHRoZSBwYXRpZW50IGJlZW4gaG9zcGl0YWxpemVkPwkJW1JlcXVpcmVkXQkJbiAKMykgSGFzIHRoZSBwYXRpZW50IGJlZW4gaW4gSUNVPwkJW1JlcXVpcmVkXQkJbiAKNCkgSXMgdGhlIHBhdGllbnQgcHJlZ25hbnQ/CQlbUmVxdWlyZWRdCQl1IAo1KSBJcyB0aGUgcGF0aWVudCBlbXBsb3llZCBpbiBIZWFsdGhjYXJlPwkJW1JlcXVpcmVkXQkJbiAKNikgSXMgdGhpcyB0aGUgcGF0aWVudCdzIGZpcnN0IHRlc3Q/CQlbUmVxdWlyZWRdCQl5IAo3KSBSZXNpZGVudCBvZiBhIGNvbmdyZWdhdGUgY2FyZSBzZXR0aW5nPwkJW1JlcXVpcmVkXQkJbiAKOCkgRGF0ZSBvZiBmaXJzdCBzeW1wdG9tCQlbUmVxdWlyZWRdCQlfX19fX19fX19fIAo5KSBXaGF0IGlzIHRoZSBzb3VyY2U/CQlbUmVxdWlyZWRdCQluIg==</inboundTemplate>
+        <outboundTemplate encoding="base64">UGF0aWVudCBJRCxOYW1lLERPQixBZ2UsUmFjZSxQcm92aWRlcixBZGRyZXNzLENpdHksU3RhdGUsWmlwLFBob25lLFJlc3VsdCBEZXNjcixBcHByIERhdGUsTE9JTkMsTE9JTkMgVGVzdCBEZXNjcixTTk9NRUQgUnNsdCBDb2RlLFNhbXBsZSBJRCxEcmF3IERhdGUsU2FtcGxlIFR5cGUsMXN0IFRlc3Q/LEhDVz8sU3ltcHRvbWF0aWMsU3ltcHQgRGF0ZSxIb3NwPyxJQ1U/LE5zZyBIb21lPyxQcmVnPw==</outboundTemplate>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.10.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.10.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.10.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.10.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.10.1">
+        <elements>
+          <com.mirth.connect.plugins.javascriptstep.JavaScriptStep version="3.10.1">
+            <name>Log response</name>
+            <sequenceNumber>0</sequenceNumber>
+            <enabled>true</enabled>
+            <script>// Send an alert if the file was not sent
+// Note reportDate is set in the Preprocessor script
+var sftpFilePrefix = configurationMap.get(&apos;FLDOH_REPORT_FILENAME_PREFIX&apos;) + &apos;_PCR_&apos; + globalChannelMap.get(&apos;reportDate&apos;)
+if(responseStatus == &apos;ERROR&apos;) {
+	var msg = &apos;There was an error sending the report &apos; + sftpFilePrefix + 
+	    &apos;* for the source Orchard Harvest file &apos; + sourceMap.get(&apos;originalFilename&apos;) + &apos; via SFTP to FLDOH with error message: &apos; + responseStatusMessage;
+	logger.error(msg);
+	alerts.sendAlert(msg);
+} else {
+     logger.info(&apos;FLDOH SFTP Sender Success: Sent the report &apos; + sftpFilePrefix + &apos;* for Orchard Harvest file &apos; + sourceMap.get(&apos;originalFilename&apos;));
+}</script>
+          </com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
+        </elements>
+        <inboundTemplate encoding="base64"></inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.10.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.10.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.10.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.10.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.10.1">
+        <elements/>
+      </filter>
+      <transportName>File Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+  </destinationConnectors>
+  <preprocessingScript>// Modify the message variable below to pre process data
+
+// This date is only used to report any errors sending the file.
+globalChannelMap.put(&apos;reportDate&apos;, DateUtil.formatDate(&apos;MMddyy&apos;, new Date()))
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+// Responses returned from here will be stored as &quot;Postprocessor&quot; in the response map
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</deployScript>
+  <undeployScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</undeployScript>
+  <properties version="3.10.1">
+    <clearGlobalChannelMap>true</clearGlobalChannelMap>
+    <messageStorageMode>DEVELOPMENT</messageStorageMode>
+    <encryptData>false</encryptData>
+    <removeContentOnCompletion>false</removeContentOnCompletion>
+    <removeOnlyFilteredOnCompletion>false</removeOnlyFilteredOnCompletion>
+    <removeAttachmentsOnCompletion>false</removeAttachmentsOnCompletion>
+    <initialState>STARTED</initialState>
+    <storeAttachments>false</storeAttachments>
+    <metaDataColumns>
+      <metaDataColumn>
+        <name>SOURCE</name>
+        <type>STRING</type>
+        <mappingName>mirth_source</mappingName>
+      </metaDataColumn>
+      <metaDataColumn>
+        <name>TYPE</name>
+        <type>STRING</type>
+        <mappingName>mirth_type</mappingName>
+      </metaDataColumn>
+    </metaDataColumns>
+    <attachmentProperties version="3.10.1">
+      <type>None</type>
+      <properties/>
+    </attachmentProperties>
+    <resourceIds class="linked-hash-map">
+      <entry>
+        <string>Default Resource</string>
+        <string>[Default Resource]</string>
+      </entry>
+    </resourceIds>
+  </properties>
+  <exportData>
+    <metadata>
+      <enabled>true</enabled>
+      <lastModified>
+        <time>1622215614001</time>
+        <timezone>America/New_York</timezone>
+      </lastModified>
+      <pruningSettings>
+        <pruneMetaDataDays>30</pruneMetaDataDays>
+        <pruneContentDays>30</pruneContentDays>
+        <archiveEnabled>false</archiveEnabled>
+      </pruningSettings>
+    </metadata>
+  </exportData>
+</channel>
