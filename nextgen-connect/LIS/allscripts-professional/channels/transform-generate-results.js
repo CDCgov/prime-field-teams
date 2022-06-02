@@ -3,9 +3,9 @@
 // negative result description, positive result description, needs unique sample ID
 // SNOMED codes and descriptions are as required for FLDOH
 var RESULT_LOOKUP = [
-    ['INFLUENZA A', '80382-5', 'FLUAV Ag Nph Ql IA.rapid', '260415000', '121006005', 'Not Detected', 'Influenza A Ag detected', false],
-    ['INFLUENZA B', '80383-3', 'FLUBV Ag Nph Ql IA.rapid', '260415000', '121008006', 'Not Detected', 'Influenza B Ag detected', false],
-    ['Covid, Rapid, Office, single', '95209-3', 'SARS-CoV+SARS-CoV-2 Ag Resp Ql IA.rapid', '260415000', '840535000', 'Not Detected', 'SC or SC2 Ag detected', true],
+    ['INFLUENZA A', '80382-5', 'Influenza virus A Ag [Presence] in Nasopharynx by Rapid immunoassay', '260415000', '121006005', 'Not Detected', 'Influenza A Ag detected', false],
+    ['INFLUENZA B', '80383-3', 'Influenza virus B Ag [Presence] in Nasopharynx by Rapid immunoassay', '260415000', '121008006', 'Not Detected', 'Influenza B Ag detected', false],
+    ['Covid, Rapid, Office, single', '95209-3', 'SARS-CoV+SARS-CoV-2 (COVID-19) Ag [Presence] in Respiratory specimen by Rapid immunoassay', '260415000', '840535000', 'Not Detected', 'SC or SC2 Ag detected', true],
     ['Covid, Rapid, Office, combo', '95942-9', 'FLUABV+SARS-CoV Ag Pnl Up resp IA.rapid', '260415000', '840535000', 'Not Detected', 'SC or SC2 Ag detected', false]
     ];
     
