@@ -3,7 +3,7 @@
   <nextMetaDataId>6</nextMetaDataId>
   <name>Ingest Raw Allscripts Rapid Test CSV</name>
   <description></description>
-  <revision>24</revision>
+  <revision>28</revision>
   <sourceConnector version="3.10.1">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>
@@ -88,11 +88,12 @@
           <script>// Result lookup table
 // &lt;string to look for (case insensitive), LOINC code, LOINC description, negative SNOMED code, positive SNOMED code,
 // negative result description, positive result description, needs unique sample ID
+// SNOMED codes and descriptions are as required for FLDOH
 var RESULT_LOOKUP = [
-[&apos;INFLUENZA A&apos;, &apos;80382-5&apos;, &apos;FLUAV Ag Nph Ql IA.rapid&apos;, &apos;260415000&apos;, &apos;121006005&apos;, &apos;Not Detected&apos;, &apos;Influenza A Ag detected&apos;, false],
-[&apos;INFLUENZA B&apos;, &apos;80383-3&apos;, &apos;FLUBV Ag Nph Ql IA.rapid&apos;, &apos;260415000&apos;, &apos;121008006&apos;, &apos;Not Detected&apos;, &apos;Influenza B Ag detected&apos;, false],
-[&apos;Covid, Rapid, Office, single&apos;, &apos;95209-3&apos;, &apos;SARS-CoV+SARS-CoV-2 Ag Resp Ql IA.rapid&apos;, &apos;260415000&apos;, &apos;840535000&apos;, &apos;Not Detected&apos;, &apos;SC or SC2 Ag detected&apos;, true],
-[&apos;Covid, Rapid, Office, combo&apos;, &apos;95942-9&apos;, &apos;FLUABV+SARS-CoV Ag Pnl Up resp IA.rapid&apos;, &apos;260415000&apos;, &apos;840535000&apos;, &apos;Not Detected&apos;, &apos;SC or SC2 Ag detected&apos;, false]
+[&apos;INFLUENZA A&apos;, &apos;80382-5&apos;, &apos;Influenza virus A Ag [Presence] in Nasopharynx by Rapid immunoassay&apos;, &apos;260415000&apos;, &apos;260373001&apos;, &apos;Not Detected&apos;, &apos;Detected&apos;, false],
+[&apos;INFLUENZA B&apos;, &apos;80383-3&apos;, &apos;Influenza virus B Ag [Presence] in Nasopharynx by Rapid immunoassay&apos;, &apos;260415000&apos;, &apos;260373001&apos;, &apos;Not Detected&apos;, &apos;Detected&apos;, false],
+[&apos;Covid, Rapid, Office, single&apos;, &apos;95209-3&apos;, &apos;SARS-CoV+SARS-CoV-2 (COVID-19) Ag [Presence] in Respiratory specimen by Rapid immunoassay&apos;, &apos;260415000&apos;, &apos;260373001&apos;, &apos;Not Detected&apos;, &apos;Detected&apos;, true],
+[&apos;Covid, Rapid, Office, combo&apos;, &apos;95209-3&apos;, &apos;SARS-CoV+SARS-CoV-2 (COVID-19) Ag [Presence] in Respiratory specimen by Rapid immunoassay&apos;, &apos;260415000&apos;, &apos;260373001&apos;, &apos;Not Detected&apos;, &apos;Detected&apos;, false],
 ];
 
 
@@ -808,7 +809,7 @@ return;</undeployScript>
     <metadata>
       <enabled>true</enabled>
       <lastModified>
-        <time>1618332165312</time>
+        <time>1654694452586</time>
         <timezone>America/New_York</timezone>
       </lastModified>
       <pruningSettings>
@@ -817,5 +818,6 @@ return;</undeployScript>
         <archiveEnabled>false</archiveEnabled>
       </pruningSettings>
     </metadata>
+    <channelTags/>
   </exportData>
 </channel>
