@@ -3,7 +3,7 @@
   <nextMetaDataId>6</nextMetaDataId>
   <name>Ingest Raw Orchard CSV Data</name>
   <description></description>
-  <revision>45</revision>
+  <revision>47</revision>
   <sourceConnector version="3.10.1">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>
@@ -218,24 +218,18 @@ var loincDesc = validate(msg[&apos;row&apos;][i][&apos;column15&apos;].toString(
 var snomed = validate(msg[&apos;row&apos;][i][&apos;column16&apos;].toString(), &apos;&apos;, new Array());
 var snomedDesc = validate(msg[&apos;row&apos;][i][&apos;column12&apos;].toString(), &apos;&apos;, new Array());
 
-// Change the LOINC description for specific LOINC
-if(loinc == &apos;95941-1&apos;) {
-	loincDesc = &apos;FLUABV+SARS-CoV-2+RSV Pnl Resp NAA+probe&apos;;
-	//Update the SNOMED codes as needed
-
-	// Change the SNOMED description per FLDOH requirements
-	// Positive result
-	if(snomed == &apos;840533007&apos;) {
-		snomedDesc = &apos;SC2 RNA detected&apos;;
-	} 
-	// Negative result
-	else if(snomed == &apos;260385009&apos;) {
-		snomedDesc = &apos;Negative&apos;;
-	}
-	// Not detected result
-	else if(snomed == &apos;260415000&apos;) {
-		snomedDesc = &apos;Not detected&apos;;
-	}
+// Change the LOINC description for specific LOINCs
+if(loinc == &apos;85477-8&apos;) {
+     loincDesc = &apos;Influenza virus A RNA [Presence] in Upper respiratory specimen by NAA with probe detection&apos;
+}
+else if(loinc == &apos;85478-6&apos;) {
+     loincDesc = &apos;Influenza virus B RNA [Presence] in Upper respiratory specimen by NAA with probe detection&apos;
+}
+else if(loinc == &apos;85479-4&apos;) {
+     loincDesc = &apos;Respiratory syncytial virus RNA [Presence] in Upper respiratory specimen by NAA with probe detection&apos;
+}
+else if(loinc == &apos;94500-6&apos;) {
+     loincDesc = &apos;SARS-CoV-2 (COVID-19) RNA [Presence] in Respiratory specimen by NAA with probe detection&apos;
 }
 
 // This needs to be in order as the column name does not set the output order
@@ -817,7 +811,7 @@ return;</undeployScript>
     <metadata>
       <enabled>true</enabled>
       <lastModified>
-        <time>1622211528277</time>
+        <time>1654709358208</time>
         <timezone>America/New_York</timezone>
       </lastModified>
       <pruningSettings>

@@ -3,24 +3,18 @@ var loincDesc = validate(msg['row'][i]['column15'].toString(), '', new Array());
 var snomed = validate(msg['row'][i]['column16'].toString(), '', new Array());
 var snomedDesc = validate(msg['row'][i]['column12'].toString(), '', new Array());
 
-// Change the LOINC description for specific LOINC
-if(loinc == '95941-1') {
-	loincDesc = 'FLUABV+SARS-CoV-2+RSV Pnl Resp NAA+probe';
-	//Update the SNOMED codes as needed
-
-	// Change the SNOMED description per FLDOH requirements
-	// Positive result
-	if(snomed == '840533007') {
-		snomedDesc = 'SC2 RNA detected';
-	} 
-	// Negative result
-	else if(snomed == '260385009') {
-		snomedDesc = 'Negative';
-	}
-	// Not detected result
-	else if(snomed == '260415000') {
-		snomedDesc = 'Not detected';
-	}
+// Change the LOINC description for specific LOINCs
+if(loinc == '85477-8') {
+     loincDesc = 'Influenza virus A RNA [Presence] in Upper respiratory specimen by NAA with probe detection'
+}
+else if(loinc == '85478-6') {
+     loincDesc = 'Influenza virus B RNA [Presence] in Upper respiratory specimen by NAA with probe detection'
+}
+else if(loinc == '85479-4') {
+     loincDesc = 'Respiratory syncytial virus RNA [Presence] in Upper respiratory specimen by NAA with probe detection'
+}
+else if(loinc == '94500-6') {
+     loincDesc = 'SARS-CoV-2 (COVID-19) RNA [Presence] in Respiratory specimen by NAA with probe detection'
 }
 
 // This needs to be in order as the column name does not set the output order
