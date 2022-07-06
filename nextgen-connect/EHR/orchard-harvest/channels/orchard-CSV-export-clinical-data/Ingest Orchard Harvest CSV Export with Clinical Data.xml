@@ -3,7 +3,7 @@
   <nextMetaDataId>6</nextMetaDataId>
   <name>Ingest Raw Orchard CSV Data</name>
   <description></description>
-  <revision>47</revision>
+  <revision>48</revision>
   <sourceConnector version="3.10.1">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>
@@ -342,9 +342,11 @@ if(clinicalInfo) {
 			if(question.includes(&apos;SYMTOMATIC&apos;)) {
 				// This answer can have a date or not, separated by some character like a comma, dash, etc. or not
 				var answerParts = answer.trim().split(&apos;[^A-Z0-9\\/]&apos;);
-				
-				//The first part is the Yes/No value
-				symtomatic = normalizeYesNoAnswer(answerParts[0]);
+
+				//The first part is the Yes/No value if any
+				if(answerParts.length &gt; 0) {
+					symtomatic = normalizeYesNoAnswer(answerParts[0]);
+				}
 				
 				// If there is another part then it is the date of first symptoms, but there may be other whitespaces at the end.
 				// Find the part that has a date if any
@@ -811,7 +813,7 @@ return;</undeployScript>
     <metadata>
       <enabled>true</enabled>
       <lastModified>
-        <time>1654709358208</time>
+        <time>1657135365790</time>
         <timezone>America/New_York</timezone>
       </lastModified>
       <pruningSettings>
