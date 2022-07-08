@@ -70,9 +70,11 @@ if(clinicalInfo) {
 			if(question.includes('SYMTOMATIC')) {
 				// This answer can have a date or not, separated by some character like a comma, dash, etc. or not
 				var answerParts = answer.trim().split('[^A-Z0-9\\/]');
-				
-				//The first part is the Yes/No value
-				symtomatic = normalizeYesNoAnswer(answerParts[0]);
+
+				//The first part is the Yes/No value if any
+				if(answerParts.length > 0) {
+					symtomatic = normalizeYesNoAnswer(answerParts[0]);
+				}
 				
 				// If there is another part then it is the date of first symptoms, but there may be other whitespaces at the end.
 				// Find the part that has a date if any
